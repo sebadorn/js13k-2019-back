@@ -1,0 +1,8 @@
+{
+	"browser": true,
+	"curly": true,
+	"esversion": 6,
+	"expr": true,
+	"globals": {},
+	"node": true
+}
