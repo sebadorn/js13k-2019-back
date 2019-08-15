@@ -3,6 +3,9 @@
 	"curly": true,
 	"esversion": 6,
 	"expr": true,
-	"globals": {},
+	"globals": {
+		"Input": true,
+		"Renderer": true
+	},
 	"node": true
 }
