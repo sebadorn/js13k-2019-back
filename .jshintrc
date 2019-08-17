@@ -4,7 +4,11 @@
 	"esversion": 6,
 	"expr": true,
 	"globals": {
+		"Audio": true,
 		"Input": true,
+		"Lang": true,
+		"Level": true,
+		"Level_Start": true,
 		"Renderer": true
 	},
 	"node": true

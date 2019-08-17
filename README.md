@@ -1,4 +1,4 @@
-# [WIP]
+# How to send back…
 
 Entry for the [js13k competition of 2019](https://2019.js13kgames.com/).  
 Theme: **Back**
