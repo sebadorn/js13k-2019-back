@@ -10,6 +10,16 @@ class Level_Start extends Level {
 	 * @extends {Level}
 	 */
 	constructor() {
+		super();
+
+		this.ui = {
+			gp: new UI_Text( Lang.startGamepad, '16px sans-serif', [255, 255, 255], 100, 200 ),
+			start: new UI_Text( Lang.start, '16px sans-serif', [255, 255, 255], 100, 240 ),
+			title: new UI_Text( Lang.title, 'bold 50px sans-serif', [255, 255, 255], 100, 100 )
+		};
+
+		this.ui.gp.blink();
+
 		Input.on( 'gp_connect', () => {
 			// TODO:
 		} );
@@ -25,17 +35,18 @@ class Level_Start extends Level {
 	 * @override
 	 */
 	draw( ctx ) {
-		ctx.fillStyle = '#FFF';
-		ctx.font = 'bold 50px sans-serif';
-		ctx.fillText( Lang.title, 100, 100 );
-
-		// TODO: add start option
-		// TODO: add gamepad hint ("press button to enable")
+		this.ui.title.draw( ctx );
+		this.ui.gp.draw( ctx );
+		this.ui.start.draw( ctx );
 	}
 
 
+	/**
+	 *
+	 * @override
+	 */
 	update( dt ) {
-		//
+		this.ui.gp.update( dt );
 	}
 
 

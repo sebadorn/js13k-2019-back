@@ -56,7 +56,7 @@ const Renderer = {
 		if( timestamp > 0 ) {
 			let diff = timestamp - this.last; // Time that passed between frames. [ms]
 
-			// Target speed of 60 FPS (=> 1000 / 60 = 50 / 3).
+			// Target speed of 60 FPS (=> 1000 / 60 = 50 / 3 [ms]).
 			// diff / ( 1000 / 60 ) <=> diff * 3 / 50
 			const dt = diff * 3 / 50;
 
@@ -69,7 +69,7 @@ const Renderer = {
 
 		this.last = timestamp;
 
-		requestAnimationFrame( this.mainLoop.bind( this ) );
+		requestAnimationFrame( t => this.mainLoop( t ) );
 	},
 
 

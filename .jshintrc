@@ -9,7 +9,8 @@
 		"Lang": true,
 		"Level": true,
 		"Level_Start": true,
-		"Renderer": true
+		"Renderer": true,
+		"UI_Text": true
 	},
 	"node": true
 }
