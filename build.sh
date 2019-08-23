@@ -28,7 +28,17 @@ sed -i'' 's/init\.js/i.js/' 'index.html'
 sed -E -i'' 's/<script src="([a-zA-Z0-9]+\/)?[a-zA-Z0-9]{2,}\.js"><\/script>//g' 'index.html'
 
 # Minify and combine the JS files.
-$TERSER 'Audio.js' 'Input.js' 'Lang.js' 'Level.js' 'level/Start.js' 'Renderer.js' 'ui/Text.js' 'init.js' \
+$TERSER \
+	'Audio.js' \
+	'Input.js' \
+	'Lang.js' \
+	'Level.js' \
+	'level/Start.js' \
+	'level/Intro.js' \
+	'level/1_1.js' \
+	'Renderer.js' \
+	'ui/Text.js' \
+	'init.js' \
 	--ecma 6 --warn \
 	--compress --mangle --mangle-props --toplevel \
 	-o 'i.js'

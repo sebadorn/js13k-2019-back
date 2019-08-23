@@ -7,10 +7,24 @@
 const Renderer = {
 
 
+	TARGET_FPS: 60,
+
 	cnv: null,
 	ctx: null,
 	last: 0,
 	level: null,
+
+
+	/**
+	 *
+	 * @param {Level} level
+	 */
+	changeLevel( level ) {
+		Input.off( 'gp_connect' );
+		Input.off( 'gp_disconnect' );
+
+		this.level = level;
+	},
 
 
 	/**
@@ -56,12 +70,11 @@ const Renderer = {
 		if( timestamp > 0 ) {
 			let diff = timestamp - this.last; // Time that passed between frames. [ms]
 
-			// Target speed of 60 FPS (=> 1000 / 60 = 50 / 3 [ms]).
-			// diff / ( 1000 / 60 ) <=> diff * 3 / 50
-			const dt = diff * 3 / 50;
+			// Target speed of 60 FPS (=> 1000 / 60 ~= 16.667 [ms]).
+			let dt = diff / 1000 * this.TARGET_FPS;
 
 			// Uncomment to show FPS in window title:
-			// document.querySelector( 'title' ).textContent = ~~( dt * 60 ) + ' FPS';
+			// document.querySelector( 'title' ).textContent = ~~( dt * this.TARGET_FPS ) + ' FPS';
 
 			this.level && this.level.update( dt );
 			this.draw( dt );

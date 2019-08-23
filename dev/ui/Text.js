@@ -17,6 +17,7 @@ class UI_Text {
 		this.text = text;
 		this.font = font;
 		this.color = [...color, 1];
+		this.visible = true;
 		this.x = x;
 		this.y = y;
 	}
@@ -37,9 +38,11 @@ class UI_Text {
 	 * @param {CanvasRenderingContext2D} ctx
 	 */
 	draw( ctx ) {
-		ctx.fillStyle = `rgba(${ this.color.join(',') })`;
-		ctx.font = this.font;
-		ctx.fillText( this.text, this.x, this.y );
+		if( this.visible ) {
+			ctx.fillStyle = `rgba(${ this.color.join(',') })`;
+			ctx.font = this.font;
+			ctx.fillText( this.text, this.x, this.y );
+		}
 	}
 
 

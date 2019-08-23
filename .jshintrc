@@ -8,6 +8,8 @@
 		"Input": true,
 		"Lang": true,
 		"Level": true,
+		"Level_1_1": true,
+		"Level_Intro": true,
 		"Level_Start": true,
 		"Renderer": true,
 		"UI_Text": true
