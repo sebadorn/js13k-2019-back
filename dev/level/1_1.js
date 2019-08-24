@@ -1,23 +1,26 @@
 'use strict';
 
 
-/**
- * Episode 1: How to send back a Ghost
- * Phase 1: Gathering supplies + Crafting
- * Scene: Kitchen
- */
 class Level_1_1 extends Level {
 
 
 	/**
-	 *
+	 * Episode 1: How to send back a Ghost
+	 * Phase 1: Gathering supplies + Crafting
 	 * @constructor
 	 * @extends {Level}
 	 */
 	constructor() {
 		super();
 
-		this.ui_text = new UI_Text( 'How to send back a Ghost', 'bold 50px sans-serif', [255, 255, 255], 100, 300 );
+		this.items = [
+			new Item( Lang.itemSalt, 100 )
+		];
+
+		this.ui_title = new UI_Text( 'How to send back a Ghost', 'bold 50px sans-serif', [255, 255, 255], 100, 300 );
+
+		this.ui_collect = new UI_Text( '[Collect]', '16px sans-serif', [255, 255, 255], 0, 0 );
+		this.ui_collect.visible = false;
 
 		this.ui_bar = new UI_Bar( 0, 40, 600, 20 );
 		this.ui_bar.centerX();
@@ -31,21 +34,50 @@ class Level_1_1 extends Level {
 
 	/**
 	 *
+	 */
+	checkItems() {
+		this.ui_collect.visible = false;
+
+		this.items.forEach( ( item, i ) => {
+			let dist = Math.abs( item.x - this.player.x );
+
+			if( dist < 100 ) {
+				this.ui_collect.x = item.x;
+				this.ui_collect.y = Math.round( window.innerHeight * 0.8 );
+				this.ui_collect.visible = true;
+
+				if( Input.isPressed( Input.ACTION.INTERACT, true ) ) {
+					this.player.items.push( item );
+					this.items.splice( i, 1 );
+				}
+			}
+		} );
+	}
+
+
+	/**
+	 *
 	 * @param {CanvasRenderingContext2D} ctx
 	 */
 	draw( ctx ) {
-		let height = Math.ceil( window.innerHeight * 0.8 );
-		this.player.y = height - this.player.height;
+		if( this.ui_bar.value <= 0 ) {
+			Crafting.draw( ctx, this.player );
+		}
+		else {
+			let height = Math.ceil( window.innerHeight * 0.8 );
+			this.player.y = height - this.player.height;
 
-		ctx.fillStyle = '#A9673D';
-		ctx.fillRect( 0, 0, window.innerWidth, height );
+			ctx.fillStyle = '#A9673D';
+			ctx.fillRect( 0, 0, window.innerWidth, height );
 
-		ctx.fillStyle = '#303040';
-		ctx.fillRect( 0, height, window.innerWidth, window.innerHeight - height );
+			ctx.fillStyle = '#303040';
+			ctx.fillRect( 0, height, window.innerWidth, window.innerHeight - height );
 
-		this.player.draw( ctx );
-		this.ui_text.draw( ctx );
-		this.ui_bar.draw( ctx );
+			this.player.draw( ctx );
+			this.ui_title.draw( ctx );
+			this.ui_collect.draw( ctx );
+			this.ui_bar.draw( ctx );
+		}
 	}
 
 
@@ -55,14 +87,21 @@ class Level_1_1 extends Level {
 	 */
 	update( dt ) {
 		if( this.ui_bar.value <= 0 ) {
-			// TODO: Gathering phase ended
-			return;
+			if( Input.isPressed( Input.ACTION.INTERACT ) ) { // TODO: use other way to progress
+				Renderer.changeLevel( new Level_1_2( this.player ) );
+			}
+			else {
+				Crafting.update( dt, this.player );
+			}
 		}
+		else {
+			let dir = Input.getDirections();
+			this.player.move( dir );
 
-		let dir = Input.getDirections();
-		this.player.move( dir );
+			this.checkItems();
 
-		this.ui_bar.value -= dt / Renderer.TARGET_FPS;
+			this.ui_bar.value -= dt / Renderer.TARGET_FPS;
+		}
 	}
 
 

@@ -125,49 +125,16 @@ const Input = {
 	},
 
 
-	// TODO: remove if not needed
-	// /**
-	//  *
-	//  * @return {?number}
-	//  */
-	// getLastArrowKey() {
-	//     let down = this.keystate[40] || 0;
-	//     let left = this.keystate[37] || 0;
-	//     let right = this.keystate[39] || 0;
-	//     let up = this.keystate[38] || 0;
-
-	//     let values = [down, left, right, up];
-	//     values.sort( ( a, b ) => b - a );
-
-	//     let max = values[0];
-
-	//     if( !max ) {
-	//         return null;
-	//     }
-
-	//     if( max === down ) { return 40; }
-	//     if( max === left ) { return 37; }
-	//     if( max === right ) { return 39; }
-	//     if( max === up ) { return 38; }
-
-	//     return null;
-	// },
-
-
 	/**
 	 * Initialize the input handler.
 	 */
 	init() {
 		document.body.onkeydown = ( ev ) => {
-			ev.preventDefault();
-
 			this.keystate[ev.which] = Date.now();
 			this._onKeyDown[ev.which] && this._onKeyDown[ev.which]();
 		};
 
 		document.body.onkeyup = ( ev ) => {
-			ev.preventDefault();
-
 			this.keystate[ev.which] = 0;
 		};
 

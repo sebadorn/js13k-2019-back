@@ -5,13 +5,18 @@
 	"expr": true,
 	"globals": {
 		"Audio": true,
+		"Crafting": true,
 		"Input": true,
+		"Item": true,
 		"Lang": true,
 		"Level": true,
 		"Level_1_1": true,
+		"Level_1_2": true,
 		"Level_Intro": true,
 		"Level_Start": true,
+		"Player": true,
 		"Renderer": true,
+		"Rhythm": true,
 		"UI_Bar": true,
 		"UI_Text": true
 	},

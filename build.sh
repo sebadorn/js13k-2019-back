@@ -32,14 +32,18 @@ sed -E -i'' 's/<script src="([a-zA-Z0-9]+\/)?[a-zA-Z0-9]{2,}\.js"><\/script>//g'
 # Minify and combine the JS files.
 $TERSER \
 	'Audio.js' \
+	'Crafting.js' \
 	'Input.js' \
+	'Item.js' \
 	'Lang.js' \
 	'Level.js' \
 	'level/Start.js' \
 	'level/Intro.js' \
 	'level/1_1.js' \
+	'level/1_2.js' \
 	'Player.js' \
 	'Renderer.js' \
+	'Rhythm.js' \
 	'ui/Bar.js' \
 	'ui/Text.js' \
 	'init.js' \

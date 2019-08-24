@@ -5,7 +5,7 @@ class Player {
 
 
 	/**
-	 *
+	 * Player.
 	 * @constructor
 	 */
 	constructor() {
@@ -14,6 +14,7 @@ class Player {
 		this.width = 160;
 		this.height = 260;
 		this.speed = 10;
+		this.items = [];
 	}
 
 
