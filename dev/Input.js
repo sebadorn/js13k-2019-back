@@ -35,6 +35,32 @@ const Input = {
 
 
 	/**
+	 *
+	 * @return {object}
+	 */
+	getDirections() {
+		let x = 0;
+		let y = 0;
+
+		if( this.isPressed( this.ACTION.LEFT ) ) {
+			x = -1;
+		}
+		else if( this.isPressed( this.ACTION.RIGHT ) ) {
+			x = 1;
+		}
+
+		if( this.isPressed( this.ACTION.UP ) ) {
+			y = -1;
+		}
+		else if( this.isPressed( this.ACTION.DOWN ) ) {
+			y = 1;
+		}
+
+		return { x, y };
+	},
+
+
+	/**
 	 * Get the keyboard key codes and gamepad
 	 * button codes for a certain action.
 	 * @param  {number} action
@@ -44,52 +70,50 @@ const Input = {
 		let kb = [];
 		let gp = [];
 
-		const ACTION = this.ACTION;
-
 		switch( action ) {
-			case ACTION.ESC:
+			case this.ACTION.ESC:
 				kb.push( 27 ); // ESC
 				gp.push( 9 );
 				break;
 
-			case ACTION.INTERACT:
+			case this.ACTION.INTERACT:
 				kb.push( 13, 69 ); // ENTER, E
 				gp.push( 0 );
 				break;
 
-			case ACTION.LEFT:
+			case this.ACTION.LEFT:
 				kb.push( 37, 65 ); // LEFT, A
 				gp.push( 14 );
 				break;
 
-			case ACTION.UP:
+			case this.ACTION.UP:
 				kb.push( 38, 87 ); // UP, W
 				gp.push( 12 );
 				break;
 
-			case ACTION.RIGHT:
+			case this.ACTION.RIGHT:
 				kb.push( 39, 68 ); // RIGHT, D
 				gp.push( 15 );
 				break;
 
-			case ACTION.DOWN:
+			case this.ACTION.DOWN:
 				kb.push( 40, 83 ); // DOWN, S
 				gp.push( 13 );
 				break;
 
-			case ACTION.FIGHT_1:
+			case this.ACTION.FIGHT_1:
 				// TODO:
 				break;
 
-			case ACTION.FIGHT_2:
+			case this.ACTION.FIGHT_2:
 				// TODO:
 				break;
 
-			case ACTION.FIGHT_3:
+			case this.ACTION.FIGHT_3:
 				// TODO:
 				break;
 
-			case ACTION.FIGHT_4:
+			case this.ACTION.FIGHT_4:
 				// TODO:
 				break;
 		}
@@ -101,16 +125,49 @@ const Input = {
 	},
 
 
+	// TODO: remove if not needed
+	// /**
+	//  *
+	//  * @return {?number}
+	//  */
+	// getLastArrowKey() {
+	//     let down = this.keystate[40] || 0;
+	//     let left = this.keystate[37] || 0;
+	//     let right = this.keystate[39] || 0;
+	//     let up = this.keystate[38] || 0;
+
+	//     let values = [down, left, right, up];
+	//     values.sort( ( a, b ) => b - a );
+
+	//     let max = values[0];
+
+	//     if( !max ) {
+	//         return null;
+	//     }
+
+	//     if( max === down ) { return 40; }
+	//     if( max === left ) { return 37; }
+	//     if( max === right ) { return 39; }
+	//     if( max === up ) { return 38; }
+
+	//     return null;
+	// },
+
+
 	/**
 	 * Initialize the input handler.
 	 */
 	init() {
 		document.body.onkeydown = ( ev ) => {
+			ev.preventDefault();
+
 			this.keystate[ev.which] = Date.now();
 			this._onKeyDown[ev.which] && this._onKeyDown[ev.which]();
 		};
 
 		document.body.onkeyup = ( ev ) => {
+			ev.preventDefault();
+
 			this.keystate[ev.which] = 0;
 		};
 
@@ -128,14 +185,15 @@ const Input = {
 
 	/**
 	 *
-	 * @param  {number} action
+	 * @param  {number}   action
+	 * @param  {?boolean} forget
 	 * @return {boolean}
 	 */
-	isPressed( action ) {
+	isPressed( action, forget ) {
 		let keys = this.getKeysForAction( action );
 
 		for( let key of keys.keyboard ) {
-			if( this.isPressedKey( key ) ) {
+			if( this.isPressedKey( key, forget ) ) {
 				return true;
 			}
 		}

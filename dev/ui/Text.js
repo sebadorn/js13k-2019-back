@@ -10,8 +10,8 @@ class UI_Text {
 	 * @param {string}   text
 	 * @param {string}   font
 	 * @param {number[]} color
-	 * @param {number} x
-	 * @param {number} y
+	 * @param {number}   x
+	 * @param {number}   y
 	 */
 	constructor( text, font, color, x, y ) {
 		this.text = text;

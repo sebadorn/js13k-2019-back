@@ -49,14 +49,28 @@ const Renderer = {
 
 
 	/**
+	 * Draw the pause screen.
+	 * @param {number} dt
+	 */
+	drawPause( dt ) {
+		this.clear();
+		this.ui_pause.draw( this.ctx );
+	},
+
+
+	/**
 	 * Initialize the renderer.
 	 */
 	init() {
 		this.cnv = document.getElementById( 'c' );
 		this.ctx = this.cnv.getContext( '2d' );
 
+		this.ui_pause = new UI_Text( Lang.pause, 'bold 50px sans-serif', [255, 255, 255], 100, 300 );
+
 		window.addEventListener( 'resize', () => this.resize() );
 		this.resize();
+
+		window.addEventListener( 'blur', () => this.isPaused = true );
 	},
 
 
@@ -76,8 +90,22 @@ const Renderer = {
 			// Uncomment to show FPS in window title:
 			// document.querySelector( 'title' ).textContent = ~~( dt * this.TARGET_FPS ) + ' FPS';
 
-			this.level && this.level.update( dt );
-			this.draw( dt );
+			if( this.isPaused ) {
+				this.drawPause( dt );
+
+				if( Input.isPressed( Input.ACTION.INTERACT, true ) ) {
+					this.isPaused = false;
+				}
+			}
+			else {
+				if( Input.isPressed( Input.ACTION.ESC, true ) ) {
+					this.isPaused = true;
+				}
+				else {
+					this.level && this.level.update( dt );
+					this.draw( dt );
+				}
+			}
 		}
 
 		this.last = timestamp;

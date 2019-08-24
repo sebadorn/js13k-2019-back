@@ -30,7 +30,7 @@ class Level_Start extends Level {
 
 	/**
 	 *
-	 * @override
+	 * @param {CanvasRenderingContext2D} ctx
 	 */
 	draw( ctx ) {
 		this.ui_title.draw( ctx );
@@ -41,7 +41,7 @@ class Level_Start extends Level {
 
 	/**
 	 *
-	 * @override
+	 * @param {number} dt
 	 */
 	update( dt ) {
 		this.ui_gp.update( dt );

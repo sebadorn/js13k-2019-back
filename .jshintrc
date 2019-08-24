@@ -12,6 +12,7 @@
 		"Level_Intro": true,
 		"Level_Start": true,
 		"Renderer": true,
+		"UI_Bar": true,
 		"UI_Text": true
 	},
 	"node": true

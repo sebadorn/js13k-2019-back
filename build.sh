@@ -2,6 +2,8 @@
 
 cd $(dirname "$0")
 
+OUT_FILE='back.zip'
+MAX_SIZE=13312
 TERSER="$HOME/.node/bin/terser"
 
 if [ -d 'build' ]; then
@@ -36,7 +38,9 @@ $TERSER \
 	'level/Start.js' \
 	'level/Intro.js' \
 	'level/1_1.js' \
+	'Player.js' \
 	'Renderer.js' \
+	'ui/Bar.js' \
 	'ui/Text.js' \
 	'init.js' \
 	--ecma 6 --warn \
@@ -53,9 +57,10 @@ find -type f -name '*.js' -not -name 'i.js' -delete
 
 # ZIP everything needed up.
 # 9: highest compression level
-zip -9 -q -r back.zip ./*
+zip -9 -q -r "$OUT_FILE" ./*
 
-echo '  - Max size: 13312 bytes'
-stat --printf="  - ZIP size: %s bytes\n" back.zip
+CURRENT_SIZE=$( stat --printf="%s" "$OUT_FILE" )
+printf '  - Max size: %5d bytes\n' "$MAX_SIZE"
+printf '  - ZIP size: %5d bytes\n' "$CURRENT_SIZE"
 
 echo '  - Done.'

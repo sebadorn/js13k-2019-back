@@ -13,13 +13,13 @@ class Level_Intro extends Level {
 		super();
 
 		this.ui_text = new UI_Text( '_Intro', 'bold 50px sans-serif', [255, 255, 255], 100, 300 );
-		this.timer = 3; // [s]
+		this.timer = 1; // [s]
 	}
 
 
 	/**
 	 *
-	 * @override
+	 * @param {CanvasRenderingContext2D} ctx
 	 */
 	draw( ctx ) {
 		this.ui_text.draw( ctx );
@@ -28,7 +28,7 @@ class Level_Intro extends Level {
 
 	/**
 	 *
-	 * @override
+	 * @param {number} dt
 	 */
 	update( dt ) {
 		this.timer -= dt / Renderer.TARGET_FPS;
