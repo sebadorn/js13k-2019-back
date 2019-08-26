@@ -18,6 +18,7 @@ cp 'dev/index-dev.html' 'build/'
 cp dev/*.js 'build/'
 cp dev/level/*.js 'build/level/'
 cp dev/ui/*.js 'build/ui/'
+cp dev/assets/*.gif 'build/assets/'
 # cp dev/assets/*.png 'build/assets/'
 
 cd 'build' > '/dev/null'
@@ -27,7 +28,7 @@ tr -d '\n' < 'index-dev.html' > 'index.html'
 
 # Remove the single JS files and only include the minified one.
 sed -i'' 's/init\.js/i.js/' 'index.html'
-sed -E -i'' 's/<script src="([a-zA-Z0-9]+\/)?[a-zA-Z0-9]{2,}\.js"><\/script>//g' 'index.html'
+sed -E -i'' 's/<script src="([a-zA-Z0-9_]+\/)?[a-zA-Z0-9_]{2,}\.js"><\/script>//g' 'index.html'
 
 # Minify and combine the JS files.
 $TERSER \
@@ -45,16 +46,18 @@ $TERSER \
 	'Renderer.js' \
 	'Rhythm.js' \
 	'ui/Bar.js' \
+	'ui/Symbol.js' \
 	'ui/Text.js' \
 	'init.js' \
 	--ecma 6 --warn \
-	--compress --mangle --mangle-props --toplevel \
+	--compress --mangle --toplevel \
+	--mangle-props keep_quoted,reserved=[imageSmoothingEnabled] \
 	-o 'i.js'
 
 sed -i'' 's/^"use strict";//' 'i.js'
 
 # Try to minify the PNG assets.
-# pngquant --quality=80-100 assets/*.png --ext .png -f
+# pngquant --quality=10-100 assets/*.png --ext .png -f
 
 rm 'index-dev.html'
 find -type f -name '*.js' -not -name 'i.js' -delete

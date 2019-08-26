@@ -18,6 +18,7 @@
 		"Renderer": true,
 		"Rhythm": true,
 		"UI_Bar": true,
+		"UI_Symbol": true,
 		"UI_Text": true
 	},
 	"node": true

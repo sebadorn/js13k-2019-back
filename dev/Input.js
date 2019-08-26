@@ -22,16 +22,22 @@ const Input = {
 		FIGHT_4: 23
 	},
 
+	// 1: Keyboard
+	// 2: Playstation Controller
+	// 3: XBox Controller
+	PROMPTS: 1,
+
 	_on: {
-		esc: [],
-		gp_connect: [],
-		gp_disconnect: [],
-		interact: []
+		'esc': [],
+		'gp_connect': [],
+		'gp_disconnect': [],
+		'interact': []
 	},
 	_onKeyDown: {},
 
 	gamepads: {},
 	keystate: {},
+	numGamepads: 0,
 
 
 	/**
@@ -139,11 +145,13 @@ const Input = {
 		};
 
 		window.addEventListener( 'gamepadconnected', ( ev ) => {
+			this.numGamepads++;
 			this.gamepads[ev.gamepad.index] = ev.gamepad;
 			this._on.gp_connect.forEach( cb => cb( ev.gamepad ) );
 		} );
 
 		window.addEventListener( 'gamepaddisconnected', ( ev ) => {
+			this.numGamepads--;
 			delete this.gamepads[ev.gamepad.index];
 			this._on.gp_disconnect.forEach( cb => cb( ev.gamepad ) );
 		} );

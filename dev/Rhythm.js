@@ -56,19 +56,20 @@ class Rhythm {
 		ctx.moveTo( 100, 400 + stepY );
 		ctx.lineTo( 600, 400 + stepY );
 
-		ctx.fillStyle = '#FFFF00';
+		ctx.fillStyle = '#FF0';
 
-		let noteX = 0;
-		let noteSize = 40;
+		// [x, y, width and height]
+		let sizes = [0, 0, 32];
 
 		// Draw all notes and offset their position
 		// based on the current time progress.
 		this.line[i].forEach( note => {
-			noteX += noteSize + 20;
+			sizes[0] += sizes[2] + 20;
+			sizes[1] = 400 + stepY - sizes[2] / 2;
 			// TODO: include time in position
 
 			if( note ) {
-				ctx.fillRect( noteX, 400 + stepY - noteSize / 2, noteSize, noteSize );
+				UI_Symbol.draw( ctx, Input.ACTION['FIGHT_' + ( i + 1 )], sizes );
 			}
 		} );
 	}

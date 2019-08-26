@@ -13,6 +13,7 @@ const Renderer = {
 	ctx: null,
 	last: 0,
 	level: null,
+	sprites: {},
 
 
 	/**
@@ -60,17 +61,26 @@ const Renderer = {
 
 	/**
 	 * Initialize the renderer.
+	 * @param {function} cb
 	 */
-	init() {
+	init( cb ) {
 		this.cnv = document.getElementById( 'c' );
 		this.ctx = this.cnv.getContext( '2d' );
 
 		this.ui_pause = new UI_Text( Lang.pause, 'bold 50px sans-serif', [255, 255, 255], 100, 300 );
 
-		window.addEventListener( 'resize', () => this.resize() );
-		this.resize();
+		let symbols = new Image();
+		symbols.src = 'assets/symbols.gif';
+		symbols.onload = () => {
+			this.sprites.symbols = symbols;
 
-		window.addEventListener( 'blur', () => this.isPaused = true );
+			window.addEventListener( 'resize', () => this.resize() );
+			this.resize();
+
+			window.addEventListener( 'blur', () => this.isPaused = true );
+
+			cb();
+		};
 	},
 
 
@@ -89,6 +99,8 @@ const Renderer = {
 
 			// Uncomment to show FPS in window title:
 			// document.querySelector( 'title' ).textContent = ~~( dt * this.TARGET_FPS ) + ' FPS';
+
+			this.ctx.imageSmoothingEnabled = false;
 
 			if( this.isPaused ) {
 				this.drawPause( dt );
