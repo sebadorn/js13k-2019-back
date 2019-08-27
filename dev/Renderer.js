@@ -67,7 +67,7 @@ const Renderer = {
 		this.cnv = document.getElementById( 'c' );
 		this.ctx = this.cnv.getContext( '2d' );
 
-		this.ui_pause = new UI_Text( Lang.pause, 'bold 50px sans-serif', [255, 255, 255], 100, 300 );
+		this.ui_pause = new UI_Text( 'Paused. Press [interact] to continue.', 'bold 50px sans-serif', [255, 255, 255], 100, 300 );
 
 		let symbols = new Image();
 		symbols.src = 'assets/symbols.gif';
@@ -77,7 +77,8 @@ const Renderer = {
 			window.addEventListener( 'resize', () => this.resize() );
 			this.resize();
 
-			window.addEventListener( 'blur', () => this.isPaused = true );
+			// Auto-pause when window loses focus.
+			// window.addEventListener( 'blur', () => this.isPaused = true );
 
 			cb();
 		};

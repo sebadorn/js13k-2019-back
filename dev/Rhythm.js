@@ -14,64 +14,18 @@ class Rhythm {
 		this.difficulty = difficulty;
 		this.items = items;
 
-		this.line = {
-			0: [],
-			1: [],
-			2: [],
-			3: []
-		};
-
 		// Speed at which the "notes" arrive.
-		this.speed = 2; // [s]
-		this.time = 0;
+		this.speed = 1.5; // [s]
+		// Time progression.
+		this.time = 0; // [s]
 
-		// Number of "notes".
-		this.length = 10;
-
-		// Generate rhythm.
-		for( let i = 0; i < this.length; i++ ) {
-			let lines = [0, 1, 2, 3];
-			let index = Math.round( Math.random() * 3 );
-			lines.splice( index, 1 );
-
-			this.line[index].push( 1 );
-
-			lines.forEach( index => {
-				this.line[index].push( 0 );
-			} );
-		}
-	}
-
-
-	/**
-	 *
-	 * @private
-	 * @param {CanvasRenderingContext2D} ctx
-	 * @param {number}                   i
-	 */
-	_drawLine( ctx, i ) {
-		let stepY = i * 60;
-
-		ctx.fillStyle = '#FFF';
-		ctx.moveTo( 100, 400 + stepY );
-		ctx.lineTo( 600, 400 + stepY );
-
-		ctx.fillStyle = '#FF0';
-
-		// [x, y, width and height]
-		let sizes = [0, 0, 32];
-
-		// Draw all notes and offset their position
-		// based on the current time progress.
-		this.line[i].forEach( note => {
-			sizes[0] += sizes[2] + 20;
-			sizes[1] = 400 + stepY - sizes[2] / 2;
-			// TODO: include time in position
-
-			if( note ) {
-				UI_Symbol.draw( ctx, Input.ACTION['FIGHT_' + ( i + 1 )], sizes );
-			}
-		} );
+		this.track = [
+			[0, 20,  0,  0, 20, 20,  0, 20,  0,  0,  0],
+			[0,  0, 21,  0,  0,  0, 22,  0, 21,  0,  0],
+			[0,  0,  0, 23,  0,  0,  0,  0,  0, 22, 21]
+		];
+		this.numNotes = this.track[0].length;
+		this.timeLength = this.speed * this.numNotes;
 	}
 
 
@@ -80,10 +34,37 @@ class Rhythm {
 	 * @param {CanvasRenderingContext2D} ctx
 	 */
 	draw( ctx ) {
-		this._drawLine( ctx, 0 );
-		this._drawLine( ctx, 1 );
-		this._drawLine( ctx, 2 );
-		this._drawLine( ctx, 3 );
+		let xEnd = window.innerWidth / 2;
+		let xStart = xEnd + 600;
+
+		this.track.forEach( ( line, i ) => {
+			line.forEach( ( note, j ) => {
+				if( !note ) {
+					return;
+				}
+
+				let time = j * this.speed;
+
+				// Already passed.
+				if( time < this.time ) {
+					return;
+				}
+
+				// Not yet visible.
+				if( time - this.time > this.speed ) {
+					return;
+				}
+
+				let progress = ( time - this.time ) / this.speed;
+				let x = Math.round( xStart * progress + xEnd * ( 1 - progress ) );
+				let y = Math.round( window.innerHeight * 0.1 + i * 50 );
+
+				ctx.globalAlpha = 1 - progress;
+				UI_Symbol.draw( ctx, note, [x, y, 42] );
+			} );
+		} );
+
+		ctx.globalAlpha = 1;
 	}
 
 
@@ -92,7 +73,6 @@ class Rhythm {
 	 * @param {number} dt
 	 */
 	update( dt ) {
-		// Time progression.
 		this.time += dt / Renderer.TARGET_FPS;
 	}
 

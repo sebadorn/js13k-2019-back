@@ -12,3 +12,8 @@ _[tbd]_
 ## GitHub
 
 https://github.com/sebadorn/js13k-2019-offline
+
+
+## Third-party libraries
+
+* ZzFX – https://github.com/KilledByAPixel/ZzFX

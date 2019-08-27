@@ -22,6 +22,20 @@ class Level_1_2 extends Level {
 	 * @param {CanvasRenderingContext2D} ctx
 	 */
 	draw( ctx ) {
+		let over = window.innerWidth * 0.1;
+
+		ctx.fillStyle = '#00F';
+		ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
+
+		ctx.fillStyle = '#AA0';
+		ctx.beginPath();
+		ctx.moveTo( 0, 0 );
+		ctx.lineTo( window.innerWidth / 2 + over, 0 );
+		ctx.lineTo( window.innerWidth / 2 - over, window.innerHeight );
+		ctx.lineTo( 0, window.innerHeight );
+		ctx.closePath();
+		ctx.fill();
+
 		this.rhythm.draw( ctx );
 	}
 

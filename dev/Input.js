@@ -138,6 +138,16 @@ const Input = {
 		document.body.onkeydown = ( ev ) => {
 			this.keystate[ev.which] = Date.now();
 			this._onKeyDown[ev.which] && this._onKeyDown[ev.which]();
+
+			if( ev.which === 49 ) {
+				Input.PROMPTS = 1;
+			}
+			else if( ev.which === 50 ) {
+				Input.PROMPTS = 2;
+			}
+			else if( ev.which === 51 ) {
+				Input.PROMPTS = 3;
+			}
 		};
 
 		document.body.onkeyup = ( ev ) => {
@@ -145,15 +155,29 @@ const Input = {
 		};
 
 		window.addEventListener( 'gamepadconnected', ( ev ) => {
+			let id = String( ev.gamepad.id ).toLowerCase();
+
+			if( id.indexOf( 'sony' ) >= 0 ) {
+				Input.PROMPTS = 2;
+			}
+			else if(
+				id.indexOf( 'xbox' ) >= 0 ||
+				id.indexOf( 'microsoft' ) >= 0
+			) {
+				Input.PROMPTS = 3;
+			}
+
 			this.numGamepads++;
 			this.gamepads[ev.gamepad.index] = ev.gamepad;
-			this._on.gp_connect.forEach( cb => cb( ev.gamepad ) );
+			this._on.gp_connect.forEach( cb => cb() );
 		} );
 
 		window.addEventListener( 'gamepaddisconnected', ( ev ) => {
+			Input.PROMPTS = 1;
+
 			this.numGamepads--;
 			delete this.gamepads[ev.gamepad.index];
-			this._on.gp_disconnect.forEach( cb => cb( ev.gamepad ) );
+			this._on.gp_disconnect.forEach( cb => cb() );
 		} );
 	},
 

@@ -28,15 +28,14 @@ tr -d '\n' < 'index-dev.html' > 'index.html'
 
 # Remove the single JS files and only include the minified one.
 sed -i'' 's/init\.js/i.js/' 'index.html'
-sed -E -i'' 's/<script src="([a-zA-Z0-9_]+\/)?[a-zA-Z0-9_]{2,}\.js"><\/script>//g' 'index.html'
+sed -E -i'' 's/<script src="([a-zA-Z0-9_]+\/)?[a-zA-Z0-9_.]{2,}\.js"><\/script>//g' 'index.html'
 
 # Minify and combine the JS files.
 $TERSER \
-	'Audio.js' \
+	'zzfx.micro.js' \
 	'Crafting.js' \
 	'Input.js' \
 	'Item.js' \
-	'Lang.js' \
 	'Level.js' \
 	'level/Start.js' \
 	'level/Intro.js' \
@@ -55,9 +54,6 @@ $TERSER \
 	-o 'i.js'
 
 sed -i'' 's/^"use strict";//' 'i.js'
-
-# Try to minify the PNG assets.
-# pngquant --quality=10-100 assets/*.png --ext .png -f
 
 rm 'index-dev.html'
 find -type f -name '*.js' -not -name 'i.js' -delete

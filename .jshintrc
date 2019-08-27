@@ -8,7 +8,6 @@
 		"Crafting": true,
 		"Input": true,
 		"Item": true,
-		"Lang": true,
 		"Level": true,
 		"Level_1_1": true,
 		"Level_1_2": true,
@@ -19,7 +18,8 @@
 		"Rhythm": true,
 		"UI_Bar": true,
 		"UI_Symbol": true,
-		"UI_Text": true
+		"UI_Text": true,
+		"zzfx": false
 	},
 	"node": true
 }

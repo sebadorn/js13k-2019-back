@@ -14,7 +14,7 @@ class Level_1_1 extends Level {
 		super();
 
 		this.items = [
-			new Item( Lang.itemSalt, 100 )
+			new Item( 'Salt Shaker', 100 )
 		];
 
 		this.ui_title = new UI_Text( 'How to send back a Ghost', 'bold 50px sans-serif', [255, 255, 255], 100, 300 );
