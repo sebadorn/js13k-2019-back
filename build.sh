@@ -12,14 +12,15 @@ fi
 
 mkdir -p 'build/assets'
 mkdir -p 'build/level'
+mkdir -p 'build/rhythm'
 mkdir -p 'build/ui'
 
 cp 'dev/index-dev.html' 'build/'
 cp dev/*.js 'build/'
 cp dev/level/*.js 'build/level/'
+cp dev/rhythm/*.js 'build/rhythm/'
 cp dev/ui/*.js 'build/ui/'
 cp dev/assets/*.gif 'build/assets/'
-# cp dev/assets/*.png 'build/assets/'
 
 cd 'build' > '/dev/null'
 
@@ -32,7 +33,6 @@ sed -E -i'' 's/<script src="([a-zA-Z0-9_]+\/)?[a-zA-Z0-9_.]{2,}\.js"><\/script>/
 
 # Minify and combine the JS files.
 $TERSER \
-	'zzfx.micro.js' \
 	'Crafting.js' \
 	'Input.js' \
 	'Item.js' \
@@ -44,9 +44,11 @@ $TERSER \
 	'Player.js' \
 	'Renderer.js' \
 	'Rhythm.js' \
+	'rhythm/Button.js' \
 	'ui/Bar.js' \
 	'ui/Symbol.js' \
 	'ui/Text.js' \
+	'zzfx.micro.js' \
 	'init.js' \
 	--ecma 6 --warn \
 	--compress --mangle --toplevel \
@@ -57,6 +59,7 @@ sed -i'' 's/^"use strict";//' 'i.js'
 
 rm 'index-dev.html'
 find -type f -name '*.js' -not -name 'i.js' -delete
+find -type d -not -name '.' -not -name 'assets' -delete
 
 # ZIP everything needed up.
 # 9: highest compression level

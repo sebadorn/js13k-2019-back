@@ -24,10 +24,10 @@ class Level_1_2 extends Level {
 	draw( ctx ) {
 		let over = window.innerWidth * 0.1;
 
-		ctx.fillStyle = '#00F';
+		ctx.fillStyle = '#30D';
 		ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
 
-		ctx.fillStyle = '#AA0';
+		ctx.fillStyle = '#08F';
 		ctx.beginPath();
 		ctx.moveTo( 0, 0 );
 		ctx.lineTo( window.innerWidth / 2 + over, 0 );

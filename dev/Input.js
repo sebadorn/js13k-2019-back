@@ -88,39 +88,27 @@ const Input = {
 				break;
 
 			case this.ACTION.LEFT:
+			case this.ACTION.FIGHT_4:
 				kb.push( 37, 65 ); // LEFT, A
-				gp.push( 14 );
+				gp.push( 2, 14 );
 				break;
 
 			case this.ACTION.UP:
+			case this.ACTION.FIGHT_3:
 				kb.push( 38, 87 ); // UP, W
-				gp.push( 12 );
+				gp.push( 3, 12 );
 				break;
 
 			case this.ACTION.RIGHT:
+			case this.ACTION.FIGHT_2:
 				kb.push( 39, 68 ); // RIGHT, D
-				gp.push( 15 );
+				gp.push( 1, 15 );
 				break;
 
 			case this.ACTION.DOWN:
-				kb.push( 40, 83 ); // DOWN, S
-				gp.push( 13 );
-				break;
-
 			case this.ACTION.FIGHT_1:
-				// TODO:
-				break;
-
-			case this.ACTION.FIGHT_2:
-				// TODO:
-				break;
-
-			case this.ACTION.FIGHT_3:
-				// TODO:
-				break;
-
-			case this.ACTION.FIGHT_4:
-				// TODO:
+				kb.push( 40, 83 ); // DOWN, S
+				gp.push( 0, 13 );
 				break;
 		}
 
@@ -136,8 +124,15 @@ const Input = {
 	 */
 	init() {
 		document.body.onkeydown = ( ev ) => {
-			this.keystate[ev.which] = Date.now();
-			this._onKeyDown[ev.which] && this._onKeyDown[ev.which]();
+			let ks = this.keystate[ev.which];
+
+			if( !ks || !ks.waitForReset ) {
+				this.keystate[ev.which] = {
+					time: Date.now()
+				};
+
+				this._onKeyDown[ev.which] && this._onKeyDown[ev.which]();
+			}
 
 			if( ev.which === 49 ) {
 				Input.PROMPTS = 1;
@@ -151,7 +146,9 @@ const Input = {
 		};
 
 		document.body.onkeyup = ( ev ) => {
-			this.keystate[ev.which] = 0;
+			this.keystate[ev.which] = {
+				time: 0
+			};
 		};
 
 		window.addEventListener( 'gamepadconnected', ( ev ) => {
@@ -233,9 +230,12 @@ const Input = {
 	 * @return {boolean}
 	 */
 	isPressedKey( code, forget ) {
-		if( this.keystate[code] ) {
+		let ks = this.keystate[code];
+
+		if( ks && ks.time ) {
 			if( forget ) {
-				delete this.keystate[code];
+				ks.time = 0;
+				ks.waitForReset = true;
 			}
 
 			return true;

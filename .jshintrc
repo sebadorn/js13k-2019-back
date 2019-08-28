@@ -16,6 +16,7 @@
 		"Player": true,
 		"Renderer": true,
 		"Rhythm": true,
+		"Rhythm_Button": true,
 		"UI_Bar": true,
 		"UI_Symbol": true,
 		"UI_Text": true,

@@ -79,11 +79,11 @@ const UI_Symbol = {
 				break;
 
 			case Input.ACTION.FIGHT_3:
-				ctx.drawImage( img, 14, offset, 7, 7, ...dest );
+				ctx.drawImage( img, 21, offset, 7, 7, ...dest );
 				break;
 
 			case Input.ACTION.FIGHT_4:
-				ctx.drawImage( img, 21, offset, 7, 7, ...dest );
+				ctx.drawImage( img, 14, offset, 7, 7, ...dest );
 				break;
 
 			case Input.ACTION.INTERACT:
