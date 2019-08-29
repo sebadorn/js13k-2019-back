@@ -5,6 +5,7 @@
 	"expr": true,
 	"globals": {
 		"Audio": true,
+		"CPlayer": false,
 		"Crafting": true,
 		"Input": true,
 		"Item": true,
@@ -19,8 +20,7 @@
 		"Rhythm_Button": true,
 		"UI_Bar": true,
 		"UI_Symbol": true,
-		"UI_Text": true,
-		"zzfx": false
+		"UI_Text": true
 	},
 	"node": true
 }

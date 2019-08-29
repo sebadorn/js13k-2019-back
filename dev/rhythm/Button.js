@@ -7,8 +7,7 @@ class Rhythm_Button {
 	/**
 	 *
 	 * @constructor
-	 * @param {number[]} pos    - Relative position on the screen.
-	 *     Each coordinate being in [0, 1].
+	 * @param {number[]} pos    - Oosition on the screen.
 	 * @param {number}   symbol - An identifier from Input.ACTION.
 	 * @param {number}   time   - When the button has to be pressed.
 	 */
@@ -59,8 +58,8 @@ class Rhythm_Button {
 	 * @param {CanvasRenderingContext2D} ctx
 	 */
 	draw( ctx ) {
-		let x = Math.round( this.pos[0] * window.innerWidth );
-		let y = Math.round( this.pos[1] * window.innerHeight );
+		let x = this.pos[0];
+		let y = this.pos[1];
 
 		if( this.wasWrong ) {
 			// TODO:
@@ -108,14 +107,6 @@ class Rhythm_Button {
 
 	/**
 	 *
-	 */
-	playSound() {
-		zzfx( 0.8, 0, 440, 0.5, 0.05, 0, 0, 0, 0 );
-	}
-
-
-	/**
-	 *
 	 * @param {number}    progress
 	 * @param {boolean[]} pressed
 	 * @param {boolean}   check
@@ -145,7 +136,7 @@ class Rhythm_Button {
 					checkNext = false;
 
 					if( !this.wasWrong ) {
-						this.playSound();
+						Audio.play( 'hit' );
 					}
 				}
 			}

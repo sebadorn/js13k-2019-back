@@ -33,6 +33,7 @@ sed -E -i'' 's/<script src="([a-zA-Z0-9_]+\/)?[a-zA-Z0-9_.]{2,}\.js"><\/script>/
 
 # Minify and combine the JS files.
 $TERSER \
+	'Audio.js' \
 	'Crafting.js' \
 	'Input.js' \
 	'Item.js' \
@@ -48,11 +49,11 @@ $TERSER \
 	'ui/Bar.js' \
 	'ui/Symbol.js' \
 	'ui/Text.js' \
-	'zzfx.micro.js' \
+	'player-small.js' \
 	'init.js' \
 	--ecma 6 --warn \
 	--compress --mangle --toplevel \
-	--mangle-props keep_quoted,reserved=[imageSmoothingEnabled] \
+	--mangle-props keep_quoted,reserved=[imageSmoothingEnabled,TinyMusic] \
 	-o 'i.js'
 
 sed -i'' 's/^"use strict";//' 'i.js'

@@ -7,32 +7,21 @@ class Rhythm {
 	/**
 	 * Rhythm game.
 	 * @constructor
-	 * @param {Item[]} items - Items which can influence the difficulty.
+	 * @param {Array[]} data
+	 * @param {Item[]}  items - Items which can influence the difficulty.
 	 */
-	constructor( items ) {
+	constructor( data, items ) {
 		this.items = items;
 		this.time = 0;
 
-		let t = 2;
-		let data = [
-			// pos, symbol, time
-			[[0.60, 0.30], 21, t],
-			[[0.70, 0.50], 21, t += 0.5],
-			[[0.60, 0.70], 20, t += 0.5],
-			[[0.50, 0.90], 20, t += 0.5],
-			[[0.40, 0.70], 23, t += 0.5],
-			[[0.30, 0.50], 23, t += 0.5],
-			[[0.40, 0.30], 22, t += 0.5],
-			[[0.50, 0.10], 22, t += 0.5]
-		];
-
-		this.buttons = [];
 		this.stats = {
 			hit: 0,
 			missed: 0,
 			total: data.length,
 			wrong: 0
 		};
+
+		this.buttons = [];
 
 		data.forEach( note => {
 			this.buttons.push( new Rhythm_Button( ...note ) );
