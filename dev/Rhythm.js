@@ -15,6 +15,7 @@ class Rhythm {
 		this.time = 0;
 
 		this.stats = {
+			correct: 0,
 			hit: 0,
 			missed: 0,
 			total: data.length,
@@ -59,7 +60,7 @@ class Rhythm {
 		let checkNext = true;
 
 		this.buttons.forEach( ( btn, i ) => {
-			checkNext = btn.update( this.time, pressed, checkNext );
+			checkNext = btn.update( this.time, pressed, checkNext, this.onNext );
 
 			if( btn.canBeRemoved ) {
 				this.updateStats( btn );
@@ -79,6 +80,9 @@ class Rhythm {
 
 			if( btn.wasWrong ) {
 				this.stats.wrong++;
+			}
+			else {
+				this.stats.correct++;
 			}
 		}
 		else {

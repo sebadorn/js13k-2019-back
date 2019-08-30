@@ -10,7 +10,7 @@ if [ -d 'build' ]; then
 	rm -r 'build'
 fi
 
-mkdir -p 'build/assets'
+# mkdir -p 'build/assets'
 mkdir -p 'build/level'
 mkdir -p 'build/rhythm'
 mkdir -p 'build/ui'
@@ -20,21 +20,23 @@ cp dev/*.js 'build/'
 cp dev/level/*.js 'build/level/'
 cp dev/rhythm/*.js 'build/rhythm/'
 cp dev/ui/*.js 'build/ui/'
-cp dev/assets/*.gif 'build/assets/'
+cp dev/assets/*.gif 'build/'
 
 cd 'build' > '/dev/null'
 
 # Remove line-breaks from HTML file.
 tr -d '\n' < 'index-dev.html' > 'index.html'
 
+# Change asset path.
+sed -E -i'' "s/ASSETS = '[a-zA-Z0-9_\/]+';/ASSETS = '';/" 'init.js'
+
 # Remove the single JS files and only include the minified one.
 sed -i'' 's/init\.js/i.js/' 'index.html'
-sed -E -i'' 's/<script src="([a-zA-Z0-9_]+\/)?[a-zA-Z0-9_.]{2,}\.js"><\/script>//g' 'index.html'
+sed -E -i'' 's/<script src="([a-zA-Z0-9_-]+\/)?[a-zA-Z0-9_.-]{2,}\.js"><\/script>//g' 'index.html'
 
 # Minify and combine the JS files.
 $TERSER \
-	'Audio.js' \
-	'Crafting.js' \
+	'GameAudio.js' \
 	'Input.js' \
 	'Item.js' \
 	'Level.js' \
@@ -46,7 +48,6 @@ $TERSER \
 	'Renderer.js' \
 	'Rhythm.js' \
 	'rhythm/Button.js' \
-	'ui/Bar.js' \
 	'ui/Symbol.js' \
 	'ui/Text.js' \
 	'player-small.js' \

@@ -84,21 +84,24 @@ class Rhythm_Button {
 		}
 		else if( this.diff >= 0 && this.diff <= this.speed ) {
 			let percent = this.diff / this.speed;
-			let border = 32;
-			let r = border + Math.round( percent * 108 );
-			let alpha = ( 1 - percent ) * 0.6;
+			let alpha = ( 1 - percent ) * 0.9;
+			let angleStart = -Math.PI / 2;
+			let angleEnd = Math.PI * ( percent * 2 - 0.5 );
 
+			// Timer around button.
 			ctx.beginPath();
 			ctx.fillStyle = `rgba(255,255,255,${ alpha })`;
-			ctx.arc( x + 21, y + 21, r, 0, Math.PI * 2 );
+			ctx.arc( x + 21, y + 21, 48, angleStart, angleEnd );
+			ctx.lineTo( x + 21, y + 21 );
 			ctx.closePath();
 			ctx.fill();
 
-			ctx.beginPath();
-			ctx.fillStyle = '#000';
-			ctx.arc( x + 21, y + 21, border, 0, Math.PI * 2 );
-			ctx.closePath();
-			ctx.fill();
+			// // Button background.
+			// ctx.beginPath();
+			// ctx.fillStyle = '#000';
+			// ctx.arc( x + 21, y + 21, 32, 0, Math.PI * 2 );
+			// ctx.closePath();
+			// ctx.fill();
 
 			UI_Symbol.draw( ctx, this.symbol, [x, y, 42] );
 		}
@@ -107,17 +110,41 @@ class Rhythm_Button {
 
 	/**
 	 *
+	 * @return {number}
+	 */
+	getRating() {
+		if( this.isHit && !this.wasWrong ) {
+			if( Math.abs( this.diff ) <= Rhythm_Button.TIME_DIFF_MIN ) {
+				return 4;
+			}
+			else if( this.diff < Rhythm_Button.TIME_DIFF_MAX / 2 ) {
+				return 3;
+			}
+			else if( this.diff < Rhythm_Button.TIME_DIFF_MAX / 1.5 ) {
+				return 2;
+			}
+
+			return 1;
+		}
+
+		return 0;
+	}
+
+
+	/**
+	 *
 	 * @param {number}    progress
 	 * @param {boolean[]} pressed
 	 * @param {boolean}   check
+	 * @param {function}  onNext
 	 */
-	update( progress, pressed, check ) {
+	update( progress, pressed, check, onNext ) {
 		let checkNext = check;
 
 		this.diff = this.time - progress;
 
 		if( !this.isHit ) {
-			if( check && this.diff >= 0 && this.diff <= 1 ) {
+			if( check && this.diff >= Rhythm_Button.TIME_DIFF_MIN && this.diff <= Rhythm_Button.TIME_DIFF_MAX ) {
 				if( this.symbol === Input.ACTION.FIGHT_1 ) {
 					this._checkPressed( progress, pressed, 0 );
 				}
@@ -136,13 +163,19 @@ class Rhythm_Button {
 					checkNext = false;
 
 					if( !this.wasWrong ) {
-						Audio.play( 'hit' );
+						GameAudio.play( 'hit' );
 					}
+
+					onNext( this.getRating() );
 				}
 			}
 
-			if( this.wasWrong || this.diff < 0 ) {
+			if( this.wasWrong || this.diff < Rhythm_Button.TIME_DIFF_MIN ) {
 				this.canBeRemoved = true;
+			}
+
+			if( this.diff < Rhythm_Button.TIME_DIFF_MIN ) {
+				onNext( -1 );
 			}
 		}
 		else {
@@ -154,3 +187,7 @@ class Rhythm_Button {
 
 
 }
+
+
+Rhythm_Button.TIME_DIFF_MIN = -0.1;
+Rhythm_Button.TIME_DIFF_MAX = 0.5;

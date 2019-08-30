@@ -12,14 +12,16 @@ class UI_Text {
 	 * @param {number[]} color
 	 * @param {number}   x
 	 * @param {number}   y
+	 * @param {?boolean} center
 	 */
-	constructor( text, font, color, x, y ) {
+	constructor( text, font, color, x, y, center ) {
 		this.text = text;
 		this.font = font;
 		this.color = [...color, 1];
 		this.visible = true;
 		this.x = x;
 		this.y = y;
+		this.center = center;
 	}
 
 
@@ -34,6 +36,14 @@ class UI_Text {
 
 
 	/**
+	 * Center the text on the x axis.
+	 */
+	centerX() {
+		this.x = Math.round( window.innerWidth / 2 );
+	}
+
+
+	/**
 	 * Draw the text.
 	 * @param {CanvasRenderingContext2D} ctx
 	 */
@@ -41,6 +51,7 @@ class UI_Text {
 		if( this.visible ) {
 			ctx.fillStyle = `rgba(${ this.color.join(',') })`;
 			ctx.font = this.font;
+			ctx.textAlign = this.center ? 'center' : 'left';
 			ctx.fillText( this.text, this.x, this.y );
 		}
 	}

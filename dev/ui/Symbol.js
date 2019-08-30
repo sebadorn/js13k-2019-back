@@ -19,7 +19,7 @@ const UI_Symbol = {
 		let sh = s[2] / 2;
 		let dest = [x, y, s[2], s[2]];
 
-		let img = Renderer.sprites.symbols;
+		let img = Renderer.sprites.sy;
 		let offset = 14;
 
 		// Keyboard
@@ -45,6 +45,13 @@ const UI_Symbol = {
 				action = Input.ACTION.FIGHT_1;
 			}
 		}
+
+		// Button background.
+		ctx.beginPath();
+		ctx.fillStyle = '#000';
+		ctx.arc( x + sh, y + sh, Math.round( sh * 1.25 ), 0, Math.PI * 2 );
+		ctx.closePath();
+		ctx.fill();
 
 		switch( action ) {
 			case Input.ACTION.DOWN:

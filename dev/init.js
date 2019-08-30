@@ -1,8 +1,10 @@
 'use strict';
 
 
+Renderer.ASSETS = 'assets/';
+
 Renderer.init( () => {
-	Audio.init( () => {
+	GameAudio.init( () => {
 		Input.init();
 
 		Renderer.level = new Level_Start();

@@ -2,9 +2,9 @@
 
 
 /**
- * @namespace Audio
+ * @namespace GameAudio
  */
-const Audio = {
+const GameAudio = {
 
 
 	data: {
@@ -102,10 +102,13 @@ const Audio = {
 	 * @param {string} key
 	 */
 	play( key ) {
-		let audio = document.createElement( 'audio' );
-		audio.src = this.objectURLs[key];
+		let audio = new Audio( this.objectURLs[key] );
+		audio.volume = GameAudio.VOLUME;
 		audio.play();
 	}
 
 
 };
+
+
+GameAudio.VOLUME = 0.25;

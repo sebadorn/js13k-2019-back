@@ -13,7 +13,11 @@ const Renderer = {
 	ctx: null,
 	last: 0,
 	level: null,
-	sprites: {},
+	sprites: {
+		'gh': null,
+		'pl': null,
+		'sy': null
+	},
 
 
 	/**
@@ -38,12 +42,8 @@ const Renderer = {
 
 	/**
 	 * Draw to the canvas.
-	 * @param {number} dt - Factor of difference between target FPS and actual value.
-	 *     = 1.0: 60 FPS
-	 *     > 1.0: Less FPS
-	 *     < 1.0: More FPS
 	 */
-	draw( dt ) {
+	draw() {
 		this.clear();
 		this.level && this.level.draw( this.ctx );
 	},
@@ -51,9 +51,8 @@ const Renderer = {
 
 	/**
 	 * Draw the pause screen.
-	 * @param {number} dt
 	 */
-	drawPause( dt ) {
+	drawPause() {
 		this.clear();
 		this.ui_pause.draw( this.ctx );
 	},
@@ -67,21 +66,47 @@ const Renderer = {
 		this.cnv = document.getElementById( 'c' );
 		this.ctx = this.cnv.getContext( '2d' );
 
-		this.ui_pause = new UI_Text( 'Paused. Press [interact] to continue.', 'bold 50px sans-serif', [255, 255, 255], 100, 300 );
+		this.ui_pause = new UI_Text(
+			'Paused. Press [interact] to continue.',
+			'bold 50px sans-serif', [255, 255, 255], 100, 300
+		);
 
-		let symbols = new Image();
-		symbols.src = 'assets/symbols.gif';
-		symbols.onload = () => {
-			this.sprites.symbols = symbols;
-
+		this.loadImages( () => {
 			window.addEventListener( 'resize', () => this.resize() );
 			this.resize();
 
-			// Auto-pause when window loses focus.
-			// window.addEventListener( 'blur', () => this.isPaused = true );
-
 			cb();
+		} );
+	},
+
+
+	/**
+	 * Load asset images.
+	 * @param {function} cb
+	 */
+	loadImages( cb ) {
+		let list = [
+			'gh', // ghost
+			'pl', // player
+			'sy'  // symbols
+		];
+
+		let next = ( i ) => {
+			if( i >= list.length ) {
+				cb();
+				return;
+			}
+
+			let value = list[i];
+			let img = new Image();
+			img.src = Renderer.ASSETS + `${ value }.gif`;
+			img.onload = () => {
+				this.sprites[value] = img;
+				next( i + 1 );
+			};
 		};
+
+		next( 0 );
 	},
 
 

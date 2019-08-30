@@ -17,18 +17,19 @@ class Level_1_1 extends Level {
 			new Item( 'Salt Shaker', 100 )
 		];
 
-		this.ui_title = new UI_Text( 'How to send back a Ghost', 'bold 50px sans-serif', [255, 255, 255], 100, 300 );
+		this.ui_title = new UI_Text(
+			'How to send back a Ghost'.toUpperCase(),
+			'21px sans-serif', [255, 255, 255], 0, 28, true
+		);
 
 		this.ui_collect = new UI_Text( '[Collect]', '16px sans-serif', [255, 255, 255], 0, 0 );
 		this.ui_collect.visible = false;
 
-		this.ui_bar = new UI_Bar( 0, 40, 600, 20 );
-		this.ui_bar.centerX();
-		this.ui_bar.total = 30;
-		this.ui_bar.value = 30;
-
-		this.player = new Player();
+		this.player = new Player( 5 );
 		this.player.x = 100;
+		this.player.orientation = 1;
+
+		this.ghostY = 0;
 	}
 
 
@@ -60,24 +61,22 @@ class Level_1_1 extends Level {
 	 * @param {CanvasRenderingContext2D} ctx
 	 */
 	draw( ctx ) {
-		if( this.ui_bar.value <= 0 ) {
-			Crafting.draw( ctx, this.player );
-		}
-		else {
-			let height = Math.ceil( window.innerHeight * 0.8 );
-			this.player.y = height - this.player.height;
+		let height = Math.ceil( window.innerHeight * 0.8 );
+		this.player.y = height - 160;
 
-			ctx.fillStyle = '#A9673D';
-			ctx.fillRect( 0, 0, window.innerWidth, height );
+		ctx.fillStyle = '#A9673D';
+		ctx.fillRect( 0, 0, window.innerWidth, height );
 
-			ctx.fillStyle = '#303040';
-			ctx.fillRect( 0, height, window.innerWidth, window.innerHeight - height );
+		let y = height - 320 + Math.sin( this.ghostY ) * 20;
+		ctx.drawImage( Renderer.sprites.gh, 0, 0, 16, 32, window.innerWidth / 2 - 80, ~~y, 160, 320 );
 
-			this.player.draw( ctx );
-			this.ui_title.draw( ctx );
-			this.ui_collect.draw( ctx );
-			this.ui_bar.draw( ctx );
-		}
+		this.player.draw( ctx );
+
+		ctx.fillStyle = '#303040';
+		ctx.fillRect( 0, height, window.innerWidth, window.innerHeight - height );
+
+		this.ui_title.draw( ctx );
+		this.ui_collect.draw( ctx );
 	}
 
 
@@ -86,22 +85,25 @@ class Level_1_1 extends Level {
 	 * @param {number} dt
 	 */
 	update( dt ) {
-		if( this.ui_bar.value <= 0 ) {
-			if( Input.isPressed( Input.ACTION.INTERACT ) ) { // TODO: use other way to progress
-				Renderer.changeLevel( new Level_1_2( this.player ) );
-			}
-			else {
-				Crafting.update( dt, this.player );
-			}
-		}
-		else {
+		// if( this.ui_bar.value <= 0 ) {
+		// 	if( Input.isPressed( Input.ACTION.INTERACT ) ) { // TODO: use other way to progress
+		// 		Renderer.changeLevel( new Level_1_2( this.player ) );
+		// 	}
+		// }
+		// else {
+			this.ui_title.centerX();
+
 			let dir = Input.getDirections();
-			this.player.move( dir );
+			this.player.update( dt, dir );
+
+			this.ghostY = this.ghostY + dt * 0.025;
+
+			if( this.ghostY > Math.PI * 2 ) {
+				this.ghostY -= Math.PI * 2;
+			}
 
 			this.checkItems();
-
-			this.ui_bar.value -= dt / Renderer.TARGET_FPS;
-		}
+		// }
 	}
 
 

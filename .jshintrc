@@ -4,9 +4,8 @@
 	"esversion": 6,
 	"expr": true,
 	"globals": {
-		"Audio": true,
 		"CPlayer": false,
-		"Crafting": true,
+		"GameAudio": true,
 		"Input": true,
 		"Item": true,
 		"Level": true,
