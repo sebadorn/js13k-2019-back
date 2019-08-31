@@ -62,12 +62,12 @@ class Level_Start extends Level {
 		this.ui_start.centerX();
 		this.ui_gp.update( dt );
 
-		this.player.y = window.innerHeight - 320;
+		this.player.y = window.innerHeight - this.player.height;
 
 		// Character is out of view, change level.
-		if( this.player.x > window.innerWidth * 1.5 ) {
+		if( this.player.x > window.innerWidth * 1.2 ) {
 			Renderer.changeLevel( new Level_1_1() );
-			// Renderer.changeLevel( new Level_1_2( [] ) );
+			// Renderer.changeLevel( new Level_1_2( this.player ) );
 		}
 		// Update animation of character walking out.
 		else if( this.walk ) {
@@ -81,7 +81,8 @@ class Level_Start extends Level {
 		}
 		// Readjust character x position in case window width changes.
 		else {
-			this.player.x = window.innerWidth / 2 - 160;
+			this.player.x = ( window.innerWidth - this.player.width ) / 2;
+			this.player.update( dt, { x: 0 } );
 		}
 	}
 

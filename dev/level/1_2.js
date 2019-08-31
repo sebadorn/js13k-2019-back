@@ -55,24 +55,32 @@ class Level_1_2 extends Level {
 		this.bgLeftAlpha = 0;
 		this.bgRightAlpha = 0;
 		this.ghostY = 0;
-		this.srcPlayerFace = [32, 16, 16, 16];
+
+		player.orientation = -1;
+		player.lastDir = 0;
+		player.size = 10;
+		this.player = player;
+		// this.srcPlayerFace = [0, 0, 16, 16];
 
 		this.rhythm = new Rhythm( data, player.items );
 
 		this.rhythm.onNext = ( rating ) => {
 			// rating: -1 missed, 0 wrong, 1 bad, 2 okay, 3 good, 4 perfect
-			this.srcPlayerFace[0] = 32;
-			this.srcPlayerFace[1] = 16;
+			// this.srcPlayerFace[0] = 0;
+			// this.srcPlayerFace[1] = 16;
+			this.player.setFace( 0, 1 );
 
 			if( rating < 1 ) {
-				this.srcPlayerFace[0] = 48;
-				this.srcPlayerFace[1] = 0;
+				// this.srcPlayerFace[0] = 16;
+				// this.srcPlayerFace[1] = 0;
+				this.player.setFace( 1, 0 );
 
 				this.bgRightAlpha = 0.25;
 			}
 			else if( rating < 2 ) {
-				this.srcPlayerFace[0] = 48;
-				this.srcPlayerFace[1] = 16;
+				// this.srcPlayerFace[0] = 16;
+				// this.srcPlayerFace[1] = 16;
+				this.player.setFace( 1, 1 );
 			}
 			// >= 2
 			else if( rating > 1 ) {
@@ -149,8 +157,9 @@ class Level_1_2 extends Level {
 		ctx.setTransform( 1, 0, 0, 1, 0, 0 );
 
 		// Player
-		ctx.drawImage( Renderer.sprites.pl, 0, 0, 32, 32, window.innerWidth - 320, window.innerHeight - 320, 320, 320 );
-		ctx.drawImage( Renderer.sprites.pl, ...this.srcPlayerFace, window.innerWidth - 240, window.innerHeight - 200, 160, 160 );
+		this.player.x = window.innerWidth - this.player.width - 80;
+		this.player.y = window.innerHeight - this.player.height;
+		this.player.draw( ctx );
 
 		this.rhythm.draw( ctx );
 	}
@@ -161,6 +170,8 @@ class Level_1_2 extends Level {
 	 * @param {number} dt
 	 */
 	update( dt ) {
+		this.player.update( dt, { x: 0 } );
+
 		if( this.bgLeftAlpha > 0 ) {
 			this.bgLeftAlpha = Math.max( 0, this.bgLeftAlpha - dt * 0.05 );
 		}

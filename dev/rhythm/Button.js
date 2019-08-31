@@ -78,7 +78,7 @@ class Rhythm_Button {
 
 			ctx.fillStyle = '#F00';
 			ctx.beginPath();
-			ctx.arc( x + 21, y + 21, r, 0, Math.PI * 2 );
+			ctx.arc( x, y, r, 0, Math.PI * 2 );
 			ctx.closePath();
 			ctx.fill();
 		}
@@ -91,19 +91,12 @@ class Rhythm_Button {
 			// Timer around button.
 			ctx.beginPath();
 			ctx.fillStyle = `rgba(255,255,255,${ alpha })`;
-			ctx.arc( x + 21, y + 21, 48, angleStart, angleEnd );
-			ctx.lineTo( x + 21, y + 21 );
+			ctx.arc( x, y, 48, angleStart, angleEnd );
+			ctx.lineTo( x, y );
 			ctx.closePath();
 			ctx.fill();
 
-			// // Button background.
-			// ctx.beginPath();
-			// ctx.fillStyle = '#000';
-			// ctx.arc( x + 21, y + 21, 32, 0, Math.PI * 2 );
-			// ctx.closePath();
-			// ctx.fill();
-
-			UI_Symbol.draw( ctx, this.symbol, [x, y, 42] );
+			UI_Symbol.draw( ctx, this.symbol, [x - 21, y - 21, 42] );
 		}
 	}
 

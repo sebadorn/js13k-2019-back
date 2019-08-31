@@ -15,7 +15,7 @@ const Renderer = {
 	level: null,
 	sprites: {
 		'gh': null,
-		'pl': null,
+		'pf': null,
 		'sy': null
 	},
 
@@ -87,7 +87,7 @@ const Renderer = {
 	loadImages( cb ) {
 		let list = [
 			'gh', // ghost
-			'pl', // player
+			'pf', // player faces
 			'sy'  // symbols
 		];
 

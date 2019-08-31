@@ -10,14 +10,35 @@ class Player {
 	 * @param {number} size
 	 */
 	constructor( size ) {
+		this.faceX = 0;
+		this.faceY = 0;
 		this.frameX = 0;
 		this.items = [];
 		this.lastDir = 0;
 		this.orientation = 0;
+		this.progress = 0;
+		this.size = size;
 		this.speed = 8;
 		this.x = 0;
 		this.y = 0;
-		this.size = size;
+	}
+
+
+	/**
+	 * Getter for player height.
+	 * @return {number}
+	 */
+	get height() {
+		return this.size * 20;
+	}
+
+
+	/**
+	 * Getter for player width.
+	 * @return {number}
+	 */
+	get width() {
+		return this.size * 16;
 	}
 
 
@@ -27,26 +48,82 @@ class Player {
 	 */
 	draw( ctx ) {
 		let x = this.x;
-		let frameX = 0;
-		let frameY = 0;
-
-		if( this.lastDir !== 0 ) {
-			frameX = 32 * ~~( this.frameX % 2 );
-			frameY = 32;
-		}
-
-		let body = 32 * this.size;
-		let face = 16 * this.size;
+		let y = this.y;
 
 		if( this.orientation > 0 ) {
-			ctx.setTransform( -1, 0, 0, 1, x + body, 0 );
+			ctx.setTransform( -1, 0, 0, 1, x + this.width, 0 );
 			x = 0;
 		}
 
-		ctx.drawImage( Renderer.sprites.pl, frameX, frameY, 32, 32, x, this.y, body, body );
-		ctx.drawImage( Renderer.sprites.pl, 32, 0, 16, 16, x + 8 * this.size, this.y + 12 * this.size, face, face );
+		y += Math.round( ( Math.sin( this.progress * 0.05 ) + 1 ) * this.size * 0.1 );
+
+		this.drawBody( ctx, x, y );
+		this.drawFace( ctx, x, y );
 
 		ctx.setTransform( 1, 0, 0, 1, 0, 0 );
+	}
+
+
+	/**
+	 * Draw the body (head, torso, legs, no face)
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number}                   x
+	 * @param {number}                   y
+	 */
+	drawBody( ctx, x, y ) {
+		let s2 = this.size * 2;
+		let s4 = this.size * 4;
+		let s16 = this.size * 16;
+
+		// Torso/head
+		ctx.fillStyle = '#000';
+		ctx.fillRect( x, y + this.size, s16, this.size * 14 );
+		ctx.fillRect( x + this.size, y, this.size * 14, s16 );
+
+		// Legs
+		// Walking
+		if( this.lastDir !== 0 ) {
+			ctx.fillRect( x + this.size * 3, this.y + s16, s2, s2 );
+			ctx.fillRect( x + this.size * 9, this.y + s16, s2, s2 );
+
+			// Frame 1
+			if( ~~this.frameX % 2 ) {
+				ctx.fillRect( x + s4, this.y + this.size * 18, s2, this.size );
+				ctx.fillRect( x + this.size * 9, this.y + s16, s2, s4 );
+			}
+			// Frame 0
+			else {
+				ctx.fillRect( x + this.size *  3, this.y + s16, s2, s4 );
+				ctx.fillRect( x + this.size * 10, this.y + this.size * 18, s2, this.size );
+			}
+		}
+		// Standing
+		else {
+			ctx.fillRect( x + this.size * 3, this.y + s16, s2, s4 );
+			ctx.fillRect( x + this.size * 9, this.y + s16, s2, s4 );
+		}
+	}
+
+
+	/**
+	 * Draw the face.
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number}                   x
+	 * @param {number}                   y
+	 */
+	drawFace( ctx, x, y ) {
+		ctx.drawImage( Renderer.sprites.pf, this.faceX, this.faceY, 16, 16, x, y, this.size * 16, this.size * 16 );
+	}
+
+
+	/**
+	 * Set the face image coordinate.
+	 * @param {number} x
+	 * @param {number} y
+	 */
+	setFace( x, y ) {
+		this.faceX = x * 16;
+		this.faceY = y * 16;
 	}
 
 
@@ -57,9 +134,14 @@ class Player {
 	 * @param {number} dir.x
 	 */
 	update( dt, dir ) {
+		this.progress += dt;
+
 		if( dir.x !== 0 ) {
 			this.orientation = ( dir.x < 0 ) ? -1 : 1;
-			this.frameX = this.frameX + dt * 0.25;
+			this.frameX = this.frameX + dt * 0.2;
+		}
+		else {
+			this.frameX = 0;
 		}
 
 		this.lastDir = dir.x;
