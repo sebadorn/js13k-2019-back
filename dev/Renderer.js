@@ -127,6 +127,7 @@ const Renderer = {
 			// document.querySelector( 'title' ).textContent = ~~( dt * this.TARGET_FPS ) + ' FPS';
 
 			this.ctx.imageSmoothingEnabled = false;
+			this.ctx.lineWidth = 1;
 
 			if( this.isPaused ) {
 				this.drawPause( dt );

@@ -16,4 +16,4 @@ https://github.com/sebadorn/js13k-2019-offline
 
 ## Third-party libraries
 
-* ZzFX – https://github.com/KilledByAPixel/ZzFX
+* CPlayer (player-small.js) – https://github.com/mbitsnbites/soundbox – [zlib/libpng License](https://opensource.org/licenses/Zlib)

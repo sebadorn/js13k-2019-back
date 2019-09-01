@@ -67,6 +67,16 @@ find -type d -not -name '.' -not -name 'assets' -delete
 # 9: highest compression level
 zip -9 -q -r "$OUT_FILE" ./*
 
+# Further optimize the compression.
+# advzip can be installed from the "advancecomp" package.
+# 4: best compression
+# i: additional iterations
+advzip -q -z -4 -i 20 "$OUT_FILE"
+# Test integrity of file.
+# STDOUT(1) is just the file name.
+# STDERR(2) shows actual errors, if there are some.
+advzip -t -p "$OUT_FILE" 1> /dev/null
+
 CURRENT_SIZE=$( stat --printf="%s" "$OUT_FILE" )
 printf '  - Max size: %5d bytes\n' "$MAX_SIZE"
 printf '  - ZIP size: %5d bytes\n' "$CURRENT_SIZE"

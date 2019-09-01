@@ -22,10 +22,10 @@ class Level_1_1 extends Level {
 			'21px sans-serif', [255, 255, 255], 0, 28, true
 		);
 
-		this.ui_challenge = new UI_Text( 'CHALLENGE', 'bold 21px sans-serif', [255, 255, 255], 0, 0, true );
+		this.ui_challenge = new UI_Text( 'challenge'.toUpperCase(), 'bold 21px sans-serif', [255, 255, 255], 0, 0, true );
 		this.ui_challenge.visible = false;
 
-		this.ui_collect = new UI_Text( '[Collect]', '16px sans-serif', [255, 255, 255], 0, 0 );
+		this.ui_collect = new UI_Text( 'collect'.toUpperCase(), '16px sans-serif', [255, 255, 255], 0, 0 );
 
 		this.player = new Player( 5 );
 		this.player.x = 100;
@@ -74,7 +74,7 @@ class Level_1_1 extends Level {
 		this.player.y = height - this.player.height;
 		this.player.draw( ctx );
 
-		ctx.fillStyle = '#303040';
+		ctx.fillStyle = '#C26F38';
 		ctx.fillRect( 0, height, window.innerWidth, window.innerHeight - height );
 
 		this.ui_title.draw( ctx );

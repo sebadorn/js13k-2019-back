@@ -84,13 +84,12 @@ class Rhythm_Button {
 		}
 		else if( this.diff >= 0 && this.diff <= this.speed ) {
 			let percent = this.diff / this.speed;
-			let alpha = ( 1 - percent ) * 0.9;
 			let angleStart = -Math.PI / 2;
 			let angleEnd = Math.PI * ( percent * 2 - 0.5 );
 
 			// Timer around button.
 			ctx.beginPath();
-			ctx.fillStyle = `rgba(255,255,255,${ alpha })`;
+			ctx.fillStyle = this.getColorTimer( percent );
 			ctx.arc( x, y, 48, angleStart, angleEnd );
 			ctx.lineTo( x, y );
 			ctx.closePath();
@@ -98,6 +97,63 @@ class Rhythm_Button {
 
 			UI_Symbol.draw( ctx, this.symbol, [x - 21, y - 21, 42] );
 		}
+	}
+
+
+	/**
+	 * Get the color for the timer.
+	 * @param  {number} percent
+	 * @return {string}
+	 */
+	getColorTimer( percent ) {
+		let r = 250;
+		let g = 160;
+		let b = 90;
+
+		if( this.symbol === Input.ACTION.FIGHT_1 ) {
+			if( Input.PROMPTS === 3 ) {
+				r = 50;
+				g = 210;
+			}
+			else {
+				r = 90;
+				b = 230;
+			}
+		}
+		else if( this.symbol === Input.ACTION.FIGHT_2 ) {
+			if( Input.PROMPTS === 3 ) {
+				g = 60;
+				b = 60;
+			}
+			else {
+				g = 150;
+				b = 50;
+			}
+		}
+		else if( this.symbol === Input.ACTION.FIGHT_3 ) {
+			if( Input.PROMPTS === 3 ) {
+				r = 240;
+				g = 230;
+				b = 70;
+			}
+			else {
+				r = 50;
+				g = 210;
+			}
+		}
+		else { // FIGHT_4
+			if( Input.PROMPTS === 3 ) {
+				r = 90;
+				b = 230;
+			}
+			else {
+				r = 220;
+				g = 140;
+				b = 210;
+			}
+		}
+
+		return `rgba(${ r },${ g },${ b },${ 1 - percent })`;
 	}
 
 

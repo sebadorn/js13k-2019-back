@@ -60,26 +60,19 @@ class Level_1_2 extends Level {
 		player.lastDir = 0;
 		player.size = 10;
 		this.player = player;
-		// this.srcPlayerFace = [0, 0, 16, 16];
 
 		this.rhythm = new Rhythm( data, player.items );
 
 		this.rhythm.onNext = ( rating ) => {
 			// rating: -1 missed, 0 wrong, 1 bad, 2 okay, 3 good, 4 perfect
-			// this.srcPlayerFace[0] = 0;
-			// this.srcPlayerFace[1] = 16;
 			this.player.setFace( 0, 1 );
 
 			if( rating < 1 ) {
-				// this.srcPlayerFace[0] = 16;
-				// this.srcPlayerFace[1] = 0;
 				this.player.setFace( 1, 0 );
 
 				this.bgRightAlpha = 0.25;
 			}
 			else if( rating < 2 ) {
-				// this.srcPlayerFace[0] = 16;
-				// this.srcPlayerFace[1] = 16;
 				this.player.setFace( 1, 1 );
 			}
 			// >= 2

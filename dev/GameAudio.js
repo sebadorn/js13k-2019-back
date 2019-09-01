@@ -8,10 +8,10 @@ const GameAudio = {
 
 
 	data: {
-		hit: {
-		  songData: [
+		'hit': {
+		  'songData': [
 			{ // Instrument 0
-			  i: [
+			  'i': [
 			  0, // OSC1_WAVEFORM
 			  255, // OSC1_VOL
 			  152, // OSC1_SEMI
@@ -42,18 +42,18 @@ const GameAudio = {
 			  2 // FX_DELAY_TIME
 			  ],
 			  // Patterns
-			  p: [1],
+			  'p': [1],
 			  // Columns
-			  c: [
-				{n: [147],
-				 f: []}
+			  'c': [
+				{'n': [147],
+				 'f': []}
 			  ]
 			},
 		  ],
-		  rowLen: 5513,   // In sample lengths
-		  patternLen: 32,  // Rows per pattern
-		  endPattern: 0,  // End pattern
-		  numChannels: 1  // Number of channels
+		  'rowLen': 5513,   // In sample lengths
+		  'patternLen': 32,  // Rows per pattern
+		  'endPattern': 0,  // End pattern
+		  'numChannels': 1  // Number of channels
 		}
 	},
 
