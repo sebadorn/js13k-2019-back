@@ -39,7 +39,7 @@ class UI_Text {
 	 * Center the text on the x axis.
 	 */
 	centerX() {
-		this.x = Math.round( window.innerWidth / 2 );
+		this.x = Renderer.centerX;
 	}
 
 

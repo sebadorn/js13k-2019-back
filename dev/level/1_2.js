@@ -19,8 +19,8 @@ class Level_1_2 extends Level {
 		// Circle.
 		let num = 15;
 		let minSize = Math.min( window.innerWidth, window.innerHeight ) * 0.8;
-		let offsetX = ( window.innerWidth - minSize ) / 2;
-		let offsetY = ( window.innerHeight - minSize ) / 2;
+		let offsetX = Renderer.centerX - minSize / 2;
+		let offsetY = Renderer.centerY - minSize / 2;
 
 		for( let i = 1; i <= num; i++ ) {
 			let key = 20 + Math.floor( i / 4 );
@@ -37,8 +37,8 @@ class Level_1_2 extends Level {
 
 		// Diagonal line.
 		num = 12;
-		offsetX = window.innerWidth * 0.2 / 2;
-		offsetY = window.innerHeight * 0.2 / 2;
+		offsetX = 0.2 * Renderer.centerX;
+		offsetY = 0.2 * Renderer.centerY;
 
 		for( let i = 1; i <= num; i++ ) {
 			let key = ( i % 2 ) ? 23 : 22;
@@ -56,7 +56,8 @@ class Level_1_2 extends Level {
 		this.bgRightAlpha = 0;
 		this.ghostY = 0;
 
-		player.orientation = -1;
+		player.orientationX = -1;
+		player.orientationY = 0;
 		player.lastDir = 0;
 		player.size = 10;
 		this.player = player;
@@ -65,15 +66,15 @@ class Level_1_2 extends Level {
 
 		this.rhythm.onNext = ( rating ) => {
 			// rating: -1 missed, 0 wrong, 1 bad, 2 okay, 3 good, 4 perfect
-			this.player.setFace( 0, 1 );
+			this.player.face = 1;
 
 			if( rating < 1 ) {
-				this.player.setFace( 1, 0 );
+				this.player.face = 2;
 
 				this.bgRightAlpha = 0.25;
 			}
 			else if( rating < 2 ) {
-				this.player.setFace( 1, 1 );
+				this.player.face = 3;
 			}
 			// >= 2
 			else if( rating > 1 ) {
@@ -92,29 +93,28 @@ class Level_1_2 extends Level {
 		let balance = stats.correct - stats.wrong - stats.missed;
 		let progress = Math.min( this.goal, balance ) / this.goal;
 
-		let wh = window.innerWidth / 2;
-		let x = wh * progress;
+		let x = Renderer.centerX * progress;
 		let over = window.innerWidth * 0.1;
 
 		let r1, g1, b1, r2, g2, b2;
 
 		if( balance < 0 ) {
-			r1 = ( 1 + progress ) * 33 - progress * 41;
-			g1 = ( 1 + progress ) * 33 - progress * 51;
-			b1 = ( 1 + progress ) * 33 - progress * 64;
+			r1 = ( 1 + progress ) * 26 - progress * 41;
+			g1 = ( 1 + progress ) * 31 - progress * 51;
+			b1 = ( 1 + progress ) * 38 - progress * 64;
 
-			r2 = 41;
-			g2 = 51;
-			b2 = 64;
+			r2 = 26;
+			g2 = 31;
+			b2 = 38;
 		}
 		else {
-			r1 = ( 1 - progress ) * 33 + progress * 233;
-			g1 = ( 1 - progress ) * 33 + progress * 133;
-			b1 = ( 1 - progress ) * 33 + progress *  64;
+			r1 = ( 1 - progress ) * 26 + progress * 233;
+			g1 = ( 1 - progress ) * 31 + progress * 133;
+			b1 = ( 1 - progress ) * 38 + progress *  64;
 
-			r2 = ( 1 - progress ) * 41 + progress * 233;
-			g2 = ( 1 - progress ) * 51 + progress * 133;
-			b2 = 64;
+			r2 = ( 1 - progress ) * 26 + progress * 233;
+			g2 = ( 1 - progress ) * 31 + progress * 133;
+			b2 = ( 1 - progress ) * 38 + progress *  64;
 		}
 
 		ctx.fillStyle = `rgb(${ ~~r1 },${ ~~g1 },${ ~~b1 })`;
@@ -129,8 +129,8 @@ class Level_1_2 extends Level {
 		ctx.fillStyle = `rgb(${ ~~r2 },${ ~~g2 },${ ~~b2 })`;
 		ctx.beginPath();
 		ctx.moveTo( 0, 0 );
-		ctx.lineTo( wh + over - x, 0 );
-		ctx.lineTo( wh - over - x, window.innerHeight );
+		ctx.lineTo( Renderer.centerX + over - x, 0 );
+		ctx.lineTo( Renderer.centerX - over - x, window.innerHeight );
 		ctx.lineTo( 0, window.innerHeight );
 		ctx.closePath();
 		ctx.fill();

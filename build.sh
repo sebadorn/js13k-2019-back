@@ -53,8 +53,9 @@ $TERSER \
 	'player-small.js' \
 	'init.js' \
 	--ecma 6 --warn \
-	--compress --mangle --toplevel \
-	--mangle-props keep_quoted,reserved=[imageSmoothingEnabled,TinyMusic] \
+	--compress --toplevel \
+	--mangle \
+	--mangle-props keep_quoted,reserved=[imageSmoothingEnabled] \
 	-o 'i.js'
 
 sed -i'' 's/^"use strict";//' 'i.js'

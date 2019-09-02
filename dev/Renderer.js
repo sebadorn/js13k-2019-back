@@ -9,13 +9,9 @@ const Renderer = {
 
 	TARGET_FPS: 60,
 
-	cnv: null,
-	ctx: null,
 	last: 0,
-	level: null,
 	sprites: {
 		'gh': null,
-		'pf': null,
 		'sy': null
 	},
 
@@ -54,7 +50,15 @@ const Renderer = {
 	 */
 	drawPause() {
 		this.clear();
+
+		this.ctx.fillStyle = '#C26F38';
+		this.ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
+
+		this.ui_pause.centerX();
+		this.ui_pause.y = Renderer.centerY - 80;
 		this.ui_pause.draw( this.ctx );
+
+		UI_Symbol.draw( this.ctx, Input.ACTION.INTERACT, [Renderer.centerX - 15, Renderer.centerY - 15, 30] );
 	},
 
 
@@ -67,8 +71,8 @@ const Renderer = {
 		this.ctx = this.cnv.getContext( '2d' );
 
 		this.ui_pause = new UI_Text(
-			'Paused. Press [interact] to continue.',
-			'bold 50px sans-serif', [255, 255, 255], 100, 300
+			'PAUSED',
+			'bold 42px sans-serif', [255, 255, 255], 0, 0, true
 		);
 
 		this.loadImages( () => {
@@ -87,7 +91,6 @@ const Renderer = {
 	loadImages( cb ) {
 		let list = [
 			'gh', // ghost
-			'pf', // player faces
 			'sy'  // symbols
 		];
 
@@ -124,7 +127,7 @@ const Renderer = {
 			let dt = diff / 1000 * this.TARGET_FPS;
 
 			// Uncomment to show FPS in window title:
-			// document.querySelector( 'title' ).textContent = ~~( dt * this.TARGET_FPS ) + ' FPS';
+			// document.querySelector( 'title' ).textContent = Math.round( dt * this.TARGET_FPS ) + ' FPS';
 
 			this.ctx.imageSmoothingEnabled = false;
 			this.ctx.lineWidth = 1;
@@ -132,7 +135,10 @@ const Renderer = {
 			if( this.isPaused ) {
 				this.drawPause( dt );
 
-				if( Input.isPressed( Input.ACTION.INTERACT, true ) ) {
+				if(
+					Input.isPressed( Input.ACTION.INTERACT, true ) ||
+					Input.isPressed( Input.ACTION.ESC, true )
+				) {
 					this.isPaused = false;
 				}
 			}
@@ -154,11 +160,14 @@ const Renderer = {
 
 
 	/**
-	 * Resize the cnv.
+	 * Resize the canvas.
 	 */
 	resize() {
 		this.cnv.height = window.innerHeight;
 		this.cnv.width = window.innerWidth;
+
+		this.centerX = Math.round( window.innerWidth / 2 );
+		this.centerY = Math.round( window.innerHeight / 2 );
 	}
 
 

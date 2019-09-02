@@ -39,7 +39,11 @@ class Rhythm {
 			return;
 		}
 
-		this.buttons.forEach( btn => btn.draw( ctx ) );
+		// Reverse drawing order so the most imminent prompt
+		// is always rendered last which means on top.
+		for( let i = this.buttons.length - 1; i >= 0; i-- ) {
+			this.buttons[i].draw( ctx );
+		}
 	}
 
 

@@ -20,7 +20,7 @@ const UI_Symbol = {
 		let dest = [x, y, s[2], s[2]];
 
 		let img = Renderer.sprites.sy;
-		let offset = 14;
+		let offset = 10;
 
 		// Keyboard
 		if( Input.PROMPTS === 1 ) {
@@ -33,7 +33,7 @@ const UI_Symbol = {
 		}
 		// Playstation Controller
 		else if( Input.PROMPTS === 2 ) {
-			offset = 7;
+			offset = 5;
 		}
 		// XBox Controller
 		else if( Input.PROMPTS === 3 ) {
@@ -49,7 +49,7 @@ const UI_Symbol = {
 		// Button background.
 		ctx.beginPath();
 		ctx.fillStyle = '#000';
-		ctx.arc( x + sh, y + sh, Math.round( sh * 1.25 ), 0, Math.PI * 2 );
+		ctx.arc( x + sh, y + sh, Math.ceil( s[2] * 0.9 ), 0, Math.PI * 2 );
 		ctx.closePath();
 		ctx.fill();
 
@@ -58,43 +58,43 @@ const UI_Symbol = {
 				ctx.translate( x + sh, y + sh );
 				ctx.rotate( -Math.PI / 2 );
 				ctx.translate( -x - sh, -y - sh );
-				ctx.drawImage( img, 0, 14, 7, 7, ...dest );
+				ctx.drawImage( img, 0, 10, 5, 5, ...dest );
 				break;
 
 			case Input.ACTION.LEFT:
-				ctx.drawImage( img, 0, 14, 7, 7, ...dest );
+				ctx.drawImage( img, 0, 10, 5, 5, ...dest );
 				break;
 
 			case Input.ACTION.RIGHT:
 				ctx.setTransform( -1, 0, 0, 1, x + s[2], y );
-				ctx.drawImage( img, 0, 14, 7, 7, 0, 0, s[2], s[2] );
+				ctx.drawImage( img, 0, 10, 5, 5, 0, 0, s[2], s[2] );
 				break;
 
 			case Input.ACTION.UP:
 				ctx.translate( x + sh, y + sh );
 				ctx.rotate( Math.PI / 2 );
 				ctx.translate( -x - sh, -y - sh );
-				ctx.drawImage( img, 0, 14, 7, 7, ...dest );
+				ctx.drawImage( img, 0, 10, 5, 5, ...dest );
 				break;
 
 			case Input.ACTION.FIGHT_1:
-				ctx.drawImage( img, 0, offset, 7, 7, ...dest );
+				ctx.drawImage( img, 0, offset, 5, 5, ...dest );
 				break;
 
 			case Input.ACTION.FIGHT_2:
-				ctx.drawImage( img, 7, offset, 7, 7, ...dest );
+				ctx.drawImage( img, 5, offset, 5, 5, ...dest );
 				break;
 
 			case Input.ACTION.FIGHT_3:
-				ctx.drawImage( img, 21, offset, 7, 7, ...dest );
+				ctx.drawImage( img, 15, offset, 5, 5, ...dest );
 				break;
 
 			case Input.ACTION.FIGHT_4:
-				ctx.drawImage( img, 14, offset, 7, 7, ...dest );
+				ctx.drawImage( img, 10, offset, 5, 5, ...dest );
 				break;
 
 			case Input.ACTION.INTERACT:
-				ctx.drawImage( img, 7, 14, 7, 7, ...dest );
+				ctx.drawImage( img, 5, 10, 5, 5, ...dest );
 				break;
 		}
 

@@ -7,7 +7,8 @@ Renderer.init( () => {
 	GameAudio.init( () => {
 		Input.init();
 
-		Renderer.level = new Level_Start();
+		new Level_Start(); // TODO:
+		Renderer.level = new Level_1_1();
 		Renderer.mainLoop();
 	} );
 } );

@@ -10,12 +10,12 @@ class Player {
 	 * @param {number} size
 	 */
 	constructor( size ) {
-		this.faceX = 0;
-		this.faceY = 0;
+		this.face = 0;
 		this.frameX = 0;
 		this.items = [];
 		this.lastDir = 0;
-		this.orientation = 0;
+		this.orientationX = 0;
+		this.orientationY = 0;
 		this.progress = 0;
 		this.size = size;
 		this.speed = 8;
@@ -48,14 +48,13 @@ class Player {
 	 */
 	draw( ctx ) {
 		let x = this.x;
-		let y = this.y;
 
-		if( this.orientation > 0 ) {
+		if( this.orientationX > 0 ) {
 			ctx.setTransform( -1, 0, 0, 1, x + this.width, 0 );
 			x = 0;
 		}
 
-		y += Math.round( ( Math.sin( this.progress * 0.05 ) + 1 ) * this.size * 0.1 );
+		let y = this.y + Math.round( ( Math.sin( this.progress * 0.05 ) + 1 ) * this.size * 0.1 );
 
 		this.drawBody( ctx, x, y );
 		this.drawFace( ctx, x, y );
@@ -65,7 +64,7 @@ class Player {
 
 
 	/**
-	 * Draw the body (head, torso, legs, no face)
+	 * Draw the body (head, torso, legs, no face).
 	 * @param {CanvasRenderingContext2D} ctx
 	 * @param {number}                   x
 	 * @param {number}                   y
@@ -112,18 +111,91 @@ class Player {
 	 * @param {number}                   y
 	 */
 	drawFace( ctx, x, y ) {
-		ctx.drawImage( Renderer.sprites.pf, this.faceX, this.faceY, 16, 16, x, y, this.size * 16, this.size * 16 );
-	}
+		let s2 = this.size * 2;
+		let s3 = this.size * 3;
+		let s4 = this.size * 4;
+		let s5 = this.size * 5;
+		let s9 = this.size * 9;
 
+		ctx.fillStyle = '#FFF';
 
-	/**
-	 * Set the face image coordinate.
-	 * @param {number} x
-	 * @param {number} y
-	 */
-	setFace( x, y ) {
-		this.faceX = x * 16;
-		this.faceY = y * 16;
+		// Faces are drawn facing to the left.
+		// Facing to the right is done by just mirroring (-1 scaling for x).
+
+		let seconds = this.progress / Renderer.TARGET_FPS;
+		let blink = false;
+
+		// Every 6 seconds blink for 1/10 of a second.
+		if( Math.round( seconds ) % 6 === 0 ) {
+			if( seconds - Math.floor( seconds ) <= 0.1 ) {
+				blink = true;
+			}
+		}
+
+		// blank stare
+		if( this.face === 0 ) {
+			if( !blink ) {
+				let offset = this.orientationY * this.size;
+
+				// left eye
+				ctx.fillRect( x + s3, y + s5 + offset, this.size, s2 );
+
+				// right eye
+				ctx.fillRect( x + s9, y + s5 + offset, this.size, s2 );
+			}
+		}
+		// angry
+		else if( this.face === 1 ) {
+			// left brow
+			ctx.fillRect( x + s2, y + s2, s2, this.size );
+			ctx.fillRect( x + s4, y + s3, this.size, this.size );
+
+			// right brow
+			ctx.fillRect( x + s9, y + s2, s2, this.size );
+			ctx.fillRect( x + this.size * 8, y + s3, this.size, this.size );
+
+			if( !blink ) {
+				// left eye
+				ctx.fillRect( x + s3, y + s4, this.size, s2 );
+
+				// right eye
+				ctx.fillRect( x + s9, y + s4, this.size, s2 );
+			}
+
+			// mouth
+			ctx.fillRect( x + s5, y + s9, s3, this.size );
+		}
+		// pain
+		else if( this.face === 2 ) {
+			// left eye
+			ctx.fillRect( x + s2, y + s4, this.size, this.size );
+			ctx.fillRect( x + s3, y + s5, this.size, this.size );
+			ctx.fillRect( x + s2, y + this.size * 6, this.size, this.size );
+
+			// right eye
+			ctx.fillRect( x + this.size * 10, y + s4, this.size, this.size );
+			ctx.fillRect( x + s9, y + s5, this.size, this.size );
+			ctx.fillRect( x + this.size * 10, y + this.size * 6, this.size, this.size );
+
+			// mouth
+			ctx.fillRect( x + s5, y + s9, s3, s2 );
+		}
+		// shocked
+		else if( this.face === 3 ) {
+			if( !blink ) {
+				let offset = this.orientationY * this.size;
+
+				// left eye
+				ctx.fillRect( x + s3, y + s4 + offset, this.size, s3 );
+
+				// right eye
+				ctx.fillRect( x + s9, y + s4 + offset, this.size, s3 );
+			}
+
+			// mouth
+			ctx.fillRect( x + s4, y + this.size * 10, s4, this.size );
+			ctx.fillRect( x + s4, y + this.size * 11, s5, this.size );
+		}
 	}
 
 
@@ -136,8 +208,14 @@ class Player {
 	update( dt, dir ) {
 		this.progress += dt;
 
+		this.orientationY = 0;
+
+		if( dir.y !== 0 ) {
+			this.orientationY = ( dir.y < 0 ) ? -1 : 1;
+		}
+
 		if( dir.x !== 0 ) {
-			this.orientation = ( dir.x < 0 ) ? -1 : 1;
+			this.orientationX = ( dir.x < 0 ) ? -1 : 1;
 			this.frameX = this.frameX + dt * 0.2;
 		}
 		else {

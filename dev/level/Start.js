@@ -50,7 +50,7 @@ class Level_Start extends Level {
 		if( !this.walk ) {
 			this.ui_gp.draw( ctx );
 			this.ui_start.draw( ctx );
-			UI_Symbol.draw( ctx, Input.ACTION.INTERACT, [window.innerWidth / 2 + 84, this.player.y - 73, 28] );
+			UI_Symbol.draw( ctx, Input.ACTION.INTERACT, [Renderer.centerX + 86, this.player.y - 70, 20] );
 		}
 
 		ctx.lineWidth = 100;
