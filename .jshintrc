@@ -13,6 +13,7 @@
 		"Level_1_2": true,
 		"Level_Intro": true,
 		"Level_Start": true,
+		"Moderation": true,
 		"Player": true,
 		"Renderer": true,
 		"Rhythm": true,

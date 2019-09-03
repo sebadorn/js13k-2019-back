@@ -44,6 +44,7 @@ $TERSER \
 	'level/Intro.js' \
 	'level/1_1.js' \
 	'level/1_2.js' \
+	'Moderation.js' \
 	'Player.js' \
 	'Renderer.js' \
 	'Rhythm.js' \
