@@ -32,7 +32,7 @@ class Moderation {
 	 */
 	update( dt ) {
 		let item = this.script[this.step];
-		let wait = item[3] || 2;
+		let wait = item[3] || 3;
 
 		if( this.progress >= this.waited + wait ) {
 			this.waited += wait;
@@ -42,6 +42,7 @@ class Moderation {
 		if( this.step >= this.script.length ) {
 			this.step = this.script.length - 1;
 			this.onDone && this.onDone();
+			this.onDone = null;
 		}
 
 		this.progress += dt / Renderer.TARGET_FPS;
@@ -53,15 +54,16 @@ class Moderation {
 
 Moderation.SCRIPT = {
 	INTRO: [
-		// Talker ID; player face; text lines; wait before showing the line (default 2 sec.)
-		[0, 4, ['Welcome to a new season of HOW TO SEND BACK…!']],
-		[0, 4, ['Three years ago we instructed our dear viewers', 'how to return packets, unwanted gifts and the like.']],
-		[0, 4, ['Honestly, the show did not very well back then.', 'But this time we made sure to spice things up!']],
+		// Talker ID; player face; text lines; wait before showing the line
+		[0, 4, ['Welcome to a new season of HOW TO SEND BACK...!']],
+		[0, 4, ['Previously we informed our dear viewers on how', 'to return packets, unwanted gifts, and the like.'], 4],
+		[0, 4, ['Honestly, the show did not very well.', 'But this time we made sure to spice things up!'], 4],
 		[0, 0, ['And we are joined by a real celebrity today!']],
-		[1, 4, ["Hi, I'm John from finances. We were over-budget as it were,", 'so I guess I will fill the role of co-moderator.']],
-		[0, 0, ['…']],
-		[1, 0, ['Why do we need an “emergency priest” on standby?']],
-		[0, 0, []]
+		[1, 4, ["Hi, I'm John from the finances section."]],
+		[0, 0, ['...']],
+		[1, 0, ['There was no more room in the budget.']],
+		[1, 0, ['Also, why is there an', '“emergency priest” on standby?'], 4],
+		[0, 0, [], 1]
 	],
 	LEVEL_1: [
 		[0, 'Here we are! How exciting! This first episode will confront our participant with quite the novelty. In …'],

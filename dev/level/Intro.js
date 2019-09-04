@@ -42,7 +42,7 @@ class Level_Intro extends Level {
 		ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
 
 		if( this.changeLevel ) {
-			if( this.progress >= this.changeLevel + 2 ) {
+			if( this.progress - this.changeLevel >= 2 ) {
 				Renderer.drawBorder();
 				Renderer.level = new Level_Start();
 
@@ -82,14 +82,13 @@ class Level_Intro extends Level {
 			let [talkerID, face, text] = this.mod.getText();
 
 			if( text.length ) {
-				let width = window.innerWidth - this.mod1.x - this.mod1.width * 2 - 130 - this.offsetX;
-				width = Math.max( width * 0.6, 400 );
+				let width = 620;
 
 				let padding = 24;
 				let bubbleHeight = padding * 2 + text.length * 21;
 
 				if( text.length > 1 ) {
-					bubbleHeight += ( text.length - 1 ) * 6;
+					bubbleHeight += ( text.length - 1 ) * 11;
 				}
 
 				let x = 0;
@@ -128,7 +127,7 @@ class Level_Intro extends Level {
 				ctx.fillStyle = '#FFF';
 
 				text.forEach( ( t, i ) => {
-					ctx.fillText( t, x + padding, y + padding + i * 27 );
+					ctx.fillText( t, x + padding, y + padding + i * 32 );
 				} );
 			}
 		}
@@ -151,7 +150,8 @@ class Level_Intro extends Level {
 		}
 
 		if( this.changeLevel ) {
-			this.offsetX = Math.round( ( this.progress - this.changeLevel ) / 2 * window.innerWidth );
+			let diff = this.progress - this.changeLevel;
+			this.offsetX = Math.round( diff / 2 * window.innerWidth );
 		}
 
 		this.mod1.x = 130 - this.offsetX;
