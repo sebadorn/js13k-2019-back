@@ -11,31 +11,18 @@ class Moderation {
 	 */
 	constructor( script ) {
 		this.script = script;
+		this.step = 0;
+		this.progress = 0;
+		this.waited = 0;
 	}
 
 
 	/**
-	 * Draw a moderator
-	 * @param {CanvasRenderingContext2D} ctx
-	 * @param {number}                   x
-	 * @param {number}                   y
-	 * @param {number}                   size
-	 * @param {string[]}                 colors
+	 * Get all text up to and including the current point.
+	 * @return {Array}
 	 */
-	drawMod( ctx, x, y, size, colors ) {
-		// Body
-		ctx.fillStyle = colors[0];
-		ctx.fillRect( x, y + size, size * 16, size * 14 );
-		ctx.fillRect( x + size, y, size * 14, size * 16 );
-
-		// Tie
-		// TODO:
-		ctx.fillStyle = colors[1];
-
-		// Eyes
-		ctx.fillStyle = '#FFF';
-		ctx.fillRect( x + size * 3, y + size * 5, size, size * 2 );
-		ctx.fillRect( x + size * 9, y + size * 5, size, size * 2 );
+	getText() {
+		return this.script[this.step];
 	}
 
 
@@ -44,28 +31,42 @@ class Moderation {
 	 * @param {number} dt
 	 */
 	update( dt ) {
-		// TODO:
+		let item = this.script[this.step];
+		let wait = item[3] || 2;
+
+		if( this.progress >= this.waited + wait ) {
+			this.waited += wait;
+			this.step++;
+		}
+
+		if( this.step >= this.script.length ) {
+			this.step = this.script.length - 1;
+			this.onDone && this.onDone();
+		}
+
+		this.progress += dt / Renderer.TARGET_FPS;
 	}
 
 
 }
 
 
-Moderation.SCRIPTS = {
+Moderation.SCRIPT = {
 	INTRO: [
-		[1, 'Welcome to a new season of HOW TO SEND BACK…!'],
-		[1, 'Three years ago we instructed our dear viewers how to return packets, unwanted gifts and the like.'],
-		[1, 'Honestly, the show did not very well back then. But this time we made sure to spice things up!'],
-		[1, 'I am your host and will be joined by a real celebrity … erm, please introduce yourself!'],
-		[2, "Hi, I'm John from finances. We were over-budget as it were, so I guess I will fill the role of co-moderator."],
-		[1, '…'],
-		[2, 'Seriously, why do we need an “emergency priest” on standby?']
+		// Talker ID; player face; text lines; wait before showing the line (default 2 sec.)
+		[0, 4, ['Welcome to a new season of HOW TO SEND BACK…!']],
+		[0, 4, ['Three years ago we instructed our dear viewers', 'how to return packets, unwanted gifts and the like.']],
+		[0, 4, ['Honestly, the show did not very well back then.', 'But this time we made sure to spice things up!']],
+		[0, 0, ['And we are joined by a real celebrity today!']],
+		[1, 4, ["Hi, I'm John from finances. We were over-budget as it were,", 'so I guess I will fill the role of co-moderator.']],
+		[0, 0, ['…']],
+		[1, 0, ['Why do we need an “emergency priest” on standby?']],
+		[0, 0, []]
 	],
 	LEVEL_1: [
-		[1, 'Here we are! How exciting! This first episode will confront our participant with quite the novelty. In …'],
-		[1, '… Say it with me John.'],
-		[2, "I've never seen a script. I have no idea what is going to happen."],
-		[1, 'Well, that is interesting in its own way then. Now let us start with:'],
-		[1, 'HOW TO SEND BACK A GHOST!']
+		[0, 'Here we are! How exciting! This first episode will confront our participant with quite the novelty. In …'],
+		[0, '… Say it with me John.'],
+		[1, "I've never seen a script. I have no idea what is going to happen."],
+		[0, 'HOW TO SEND BACK A GHOST!']
 	]
 };

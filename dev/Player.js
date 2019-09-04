@@ -10,6 +10,7 @@ class Player {
 	 * @param {number} size
 	 */
 	constructor( size ) {
+		this.color = '#000';
 		this.face = 0;
 		this.frameX = 0;
 		this.items = [];
@@ -75,7 +76,7 @@ class Player {
 		let s16 = this.size * 16;
 
 		// Torso/head
-		ctx.fillStyle = '#000';
+		ctx.fillStyle = this.color;
 		ctx.fillRect( x, y + this.size, s16, this.size * 14 );
 		ctx.fillRect( x + this.size, y, this.size * 14, s16 );
 
@@ -98,8 +99,15 @@ class Player {
 		}
 		// Standing
 		else {
-			ctx.fillRect( x + this.size * 3, this.y + s16, s2, s4 );
-			ctx.fillRect( x + this.size * 9, this.y + s16, s2, s4 );
+			// Center legs when facing the viewer.
+			if( this.face === 4 ) {
+				ctx.fillRect( x + s4, this.y + s16, s2, s4 );
+				ctx.fillRect( x + this.size * 10, this.y + s16, s2, s4 );
+			}
+			else {
+				ctx.fillRect( x + this.size * 3, this.y + s16, s2, s4 );
+				ctx.fillRect( x + this.size * 9, this.y + s16, s2, s4 );
+			}
 		}
 	}
 
@@ -142,6 +150,16 @@ class Player {
 
 				// right eye
 				ctx.fillRect( x + s9, y + s5 + offset, this.size, s2 );
+			}
+		}
+		// blank stare at viewer
+		else if( this.face === 4 ) {
+			if( !blink ) {
+				// left eye
+				ctx.fillRect( x + s4, y + s5, this.size, s2 );
+
+				// right eye
+				ctx.fillRect( x + this.size * 11, y + s5, this.size, s2 );
 			}
 		}
 		// angry
@@ -204,13 +222,14 @@ class Player {
 	 * @param {number} dt
 	 * @param {object} dir
 	 * @param {number} dir.x
+	 * @param {number} dir.y
 	 */
 	update( dt, dir ) {
 		this.progress += dt;
 
 		this.orientationY = 0;
 
-		if( dir.y !== 0 ) {
+		if( typeof dir.y === 'number' && dir.y !== 0 ) {
 			this.orientationY = ( dir.y < 0 ) ? -1 : 1;
 		}
 

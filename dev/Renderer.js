@@ -46,6 +46,16 @@ const Renderer = {
 
 
 	/**
+	 * Draw a border.
+	 */
+	drawBorder() {
+		this.ctx.lineWidth = 100;
+		this.ctx.strokeStyle = '#1A1F26';
+		this.ctx.strokeRect( 0, 0, window.innerWidth, window.innerHeight );
+	},
+
+
+	/**
 	 * Draw the pause screen.
 	 */
 	drawPause() {
@@ -131,6 +141,7 @@ const Renderer = {
 
 			this.ctx.imageSmoothingEnabled = false;
 			this.ctx.lineWidth = 1;
+			this.ctx.textBaseline = 'alphabetic';
 
 			if( this.isPaused ) {
 				this.drawPause( dt );

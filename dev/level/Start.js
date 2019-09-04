@@ -31,7 +31,9 @@ class Level_Start extends Level {
 			this.ui_gp.visible = true;
 		} );
 
+		this.offsetX = window.innerWidth;
 		this.player = new Player( 10 );
+		this.progress = 0;
 		this.walk = false;
 	}
 
@@ -50,12 +52,10 @@ class Level_Start extends Level {
 		if( !this.walk ) {
 			this.ui_gp.draw( ctx );
 			this.ui_start.draw( ctx );
-			UI_Symbol.draw( ctx, Input.ACTION.INTERACT, [Renderer.centerX + 86, this.player.y - 70, 20] );
+			UI_Symbol.draw( ctx, Input.ACTION.INTERACT, [Renderer.centerX + 86 + this.offsetX, this.player.y - 70, 20] );
 		}
 
-		ctx.lineWidth = 100;
-		ctx.strokeStyle = '#1A1F26';
-		ctx.strokeRect( 0, 0, window.innerWidth, window.innerHeight );
+		Renderer.drawBorder();
 	}
 
 
@@ -64,27 +64,35 @@ class Level_Start extends Level {
 	 * @param {number} dt
 	 */
 	update( dt ) {
+		if( this.progress <= 4 ) {
+			let pc = 1 - this.progress / 4;
+			this.offsetX = Math.round( pc * window.innerWidth );
+		}
+
+		this.progress += dt / Renderer.TARGET_FPS;
+
 		this.ui_title.y = Math.round( window.innerHeight / 3 );
 		this.ui_title.centerX();
+		this.ui_title.x += this.offsetX;
 
 		this.player.y = window.innerHeight - this.player.height - 50;
 
 		this.ui_gp.centerX();
 		this.ui_gp.update( dt );
+		this.ui_gp.x += this.offsetX;
 		this.ui_gp.y = this.player.y - 160;
 
 		this.ui_start.centerX();
-		this.ui_start.x -= 20;
+		this.ui_start.x -= 20 - this.offsetX;
 		this.ui_start.y = this.player.y - 50;
 
 		// Character is out of view, change level.
-		if( this.player.x > window.innerWidth * 1.2 ) {
+		if( this.walk && this.player.x > window.innerWidth * 1.2 ) {
 			Renderer.changeLevel( new Level_1_1() );
-			// Renderer.changeLevel( new Level_1_2( this.player ) );
 		}
 		// Update animation of character walking out.
 		else if( this.walk ) {
-			this.player.update( dt, { x: 1 } );
+			this.player.update( dt, { x: 1, y: 0 } );
 		}
 		else if( Input.isPressed( Input.ACTION.INTERACT, true ) ) {
 			new Level_Intro();
@@ -94,8 +102,9 @@ class Level_Start extends Level {
 		}
 		// Readjust character x position in case window width changes.
 		else {
-			this.player.x = ( window.innerWidth - this.player.width ) / 2;
-			this.player.update( dt, { x: 0 } );
+			let dir = Input.getDirections();
+			this.player.x = ( window.innerWidth - this.player.width ) / 2 + this.offsetX;
+			this.player.update( dt, { x: 0, y: dir.y } );
 		}
 	}
 
