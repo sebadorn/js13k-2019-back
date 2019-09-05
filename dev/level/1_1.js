@@ -6,7 +6,6 @@ class Level_1_1 extends Level {
 
 	/**
 	 * Episode 1: How to send back a Ghost
-	 * Phase 1: Gathering supplies
 	 * @constructor
 	 * @extends {Level}
 	 */
@@ -14,7 +13,8 @@ class Level_1_1 extends Level {
 		super();
 
 		this.items = [
-			new Item( 'Salt Shaker', 100 )
+			new Item( 'Salt Shaker', 450, 0, 3, Item.drawSaltShaker ),
+			new Item( 'Iron Pan', 0, 0, 5, Item.drawPan )
 		];
 
 		this.ui_title = new UI_Text(
@@ -25,7 +25,7 @@ class Level_1_1 extends Level {
 		this.ui_challenge = new UI_Text( 'challenge'.toUpperCase(), 'bold 21px sans-serif', [255, 255, 255], 0, 0, true );
 		this.ui_challenge.visible = false;
 
-		this.ui_collect = new UI_Text( 'collect'.toUpperCase(), '16px sans-serif', [255, 255, 255], 0, 0 );
+		this.ui_collect = new UI_Text( '', 'bold 18px sans-serif', [255, 255, 255], 0, 0, true );
 
 		this.player = new Player( 5 );
 		this.player.x = 100;
@@ -39,21 +39,29 @@ class Level_1_1 extends Level {
 
 	/**
 	 *
+	 * @param {CanvasRenderingContext2D} ctx
 	 */
-	checkItems() {
+	checkItems( ctx ) {
 		this.ui_collect.visible = false;
 
 		this.items.forEach( ( item, i ) => {
-			let dist = Math.abs( item.x - this.player.x );
+			if( item.collected ) {
+				return;
+			}
+
+			let dist = Math.abs( item.centerX - this.player.x );
 
 			if( dist < 100 ) {
-				this.ui_collect.x = item.x;
-				this.ui_collect.y = Math.round( window.innerHeight * 0.8 );
+				this.ui_collect.x = item.centerX;
+				this.ui_collect.y = item.y - 20;
+				this.ui_collect.text = ( 'collect ' + item.name ).toUpperCase();
 				this.ui_collect.visible = true;
+
+				UI_Symbol.draw( ctx, Input.ACTION.INTERACT, [item.centerX - 10, item.y - 80, 20] );
 
 				if( Input.isPressed( Input.ACTION.INTERACT, true ) ) {
 					this.player.items.push( item );
-					this.items.splice( i, 1 );
+					item.collected = true;
 				}
 			}
 		} );
@@ -72,6 +80,19 @@ class Level_1_1 extends Level {
 		// Background color
 		ctx.fillStyle = '#1A1F26';
 		ctx.fillRect( 0, 0, window.innerWidth, height );
+
+		// Drawer
+		ctx.fillStyle = '#0A0A0A';
+		ctx.fillRect( 420, height - 100, 120, 90 );
+		ctx.fillRect( 420, height - 10, 10, 10 );
+		ctx.fillRect( 530, height - 10, 10, 10 );
+		ctx.fillStyle = '#202014';
+		ctx.fillRect( 430, height - 90, 100, 70 );
+		ctx.fillStyle = '#0A0A0A';
+		ctx.fillRect( 420, height - 100, 120, 10 );
+		ctx.fillRect( 420, height - 60, 120, 10 );
+		ctx.fillRect( 460, height - 80, 40, 10 );
+		ctx.fillRect( 460, height - 40, 40, 10 );
 
 		// Door
 		ctx.fillStyle = 'rgba(194,111,56,0.8)';
@@ -129,6 +150,12 @@ class Level_1_1 extends Level {
 		ctx.closePath();
 		ctx.stroke();
 
+		// Items
+		this.items[0].y = height - 112;
+		this.items[1].y = height - 60;
+		this.checkItems( ctx );
+		this.items.forEach( item => !item.collected && item.draw( ctx ) );
+
 		// Text and prompts
 		this.ui_title.draw( ctx );
 		this.ui_collect.draw( ctx );
@@ -182,7 +209,7 @@ class Level_1_1 extends Level {
 			this.ui_challenge.visible = false;
 		}
 
-		this.checkItems();
+		this.items[1].x = window.innerWidth - 400;
 	}
 
 

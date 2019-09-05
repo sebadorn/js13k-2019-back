@@ -130,6 +130,14 @@ class Level_Intro extends Level {
 					ctx.fillText( t, x + padding, y + padding + i * 32 );
 				} );
 			}
+			else {
+				if( talkerID ) {
+					this.mod2.face = face;
+				}
+				else {
+					this.mod1.face = face;
+				}
+			}
 		}
 
 		Renderer.drawBorder();
