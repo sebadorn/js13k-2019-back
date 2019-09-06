@@ -8,8 +8,9 @@ class Level_1_1 extends Level {
 	 * Episode 1: How to send back a Ghost
 	 * @constructor
 	 * @extends {Level}
+	 * @param {?object} stats
 	 */
-	constructor() {
+	constructor( stats ) {
 		super();
 
 		this.items = [

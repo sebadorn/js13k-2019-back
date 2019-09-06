@@ -8,10 +8,10 @@ class Rhythm {
 	 * Rhythm game.
 	 * @constructor
 	 * @param {Array[]} data
-	 * @param {Item[]}  items - Items which can influence the difficulty.
+	 * @param {Item}    item - Item which can influence the difficulty.
 	 */
-	constructor( data, items ) {
-		this.items = items;
+	constructor( data, item ) {
+		this.item = item;
 		this.time = 0;
 
 		this.stats = {
@@ -91,6 +91,11 @@ class Rhythm {
 		}
 		else {
 			this.stats.missed++;
+		}
+
+		if( this.stats.hit + this.stats.missed === this.stats.total ) {
+			this.onDone();
+			this.onDone = null;
 		}
 	}
 

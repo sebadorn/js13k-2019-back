@@ -27,6 +27,7 @@ const Input = {
 	// 3: XBox Controller
 	PROMPTS: 1,
 
+	_ignoreUntilPressedAgain: {},
 	_on: {
 		'esc': [],
 		'gp_connect': [],
@@ -88,24 +89,40 @@ const Input = {
 				break;
 
 			case this.ACTION.LEFT:
+				kb.push( 37 ); // LEFT
+				gp.push( 14 );
+				break;
+
 			case this.ACTION.FIGHT_4:
 				kb.push( 37, 65 ); // LEFT, A
 				gp.push( 2, 14 );
 				break;
 
 			case this.ACTION.UP:
+				kb.push( 38 ); // UP
+				gp.push( 12 );
+				break;
+
 			case this.ACTION.FIGHT_3:
 				kb.push( 38, 87 ); // UP, W
 				gp.push( 3, 12 );
 				break;
 
 			case this.ACTION.RIGHT:
+				kb.push( 39 ); // RIGHT
+				gp.push( 15 );
+				break;
+
 			case this.ACTION.FIGHT_2:
 				kb.push( 39, 68 ); // RIGHT, D
 				gp.push( 1, 15 );
 				break;
 
 			case this.ACTION.DOWN:
+				kb.push( 40 ); // DOWN
+				gp.push( 13 );
+				break;
+
 			case this.ACTION.FIGHT_1:
 				kb.push( 40, 83 ); // DOWN, S
 				gp.push( 0, 13 );
@@ -154,7 +171,12 @@ const Input = {
 		window.addEventListener( 'gamepadconnected', ( ev ) => {
 			let id = String( ev.gamepad.id ).toLowerCase();
 
-			if( id.indexOf( 'sony' ) >= 0 ) {
+			if(
+				id.indexOf( 'sony' ) >= 0 ||
+				id.indexOf( 'dualshock' ) >= 0 ||
+				id.indexOf( 'playstation' ) >= 0 ||
+				id.indexOf( 'ps3' ) >= 0
+			) {
 				Input.PROMPTS = 2;
 			}
 			else if(
@@ -195,8 +217,46 @@ const Input = {
 		}
 
 		for( let key of keys.gamepad ) {
-			if( this.isPressedGamepad( key ) ) {
+			if( this.isPressedGamepad( key, forget ) ) {
 				return true;
+			}
+		}
+
+		// Also check axes.
+		if( action === this.ACTION.LEFT || action === this.ACTION.FIGHT_4 ) {
+			for( let index in this.gamepads ) {
+				let gp = this.gamepads[index];
+
+				if( gp.axes[6] && gp.axes[6] <= -0.2 ) {
+					return true;
+				}
+			}
+		}
+		else if( action === this.ACTION.RIGHT ) {
+			for( let index in this.gamepads ) {
+				let gp = this.gamepads[index];
+
+				if( gp.axes[6] && gp.axes[6] >= 0.2 ) {
+					return true;
+				}
+			}
+		}
+		else if( action === this.ACTION.UP || action === this.ACTION.FIGHT_3 ) {
+			for( let index in this.gamepads ) {
+				let gp = this.gamepads[index];
+
+				if( gp.axes[7] && gp.axes[7] <= -0.2 ) {
+					return true;
+				}
+			}
+		}
+		else if( action === this.ACTION.DOWN ) {
+			for( let index in this.gamepads ) {
+				let gp = this.gamepads[index];
+
+				if( gp.axes[7] && gp.axes[7] >= 0.2 ) {
+					return true;
+				}
 			}
 		}
 
@@ -206,15 +266,26 @@ const Input = {
 
 	/**
 	 * Check if a button is currently being pressed.
-	 * @param  {number} code - Button code.
+	 * @param  {number}  code   - Button code.
+	 * @param  {boolean} forget
 	 * @return {boolean}
 	 */
-	isPressedGamepad( code ) {
+	isPressedGamepad( code, forget ) {
 		for( let index in this.gamepads ) {
 			let gp = this.gamepads[index];
 			let button = gp.buttons[code];
 
 			if( button && button.pressed ) {
+				// TODO: not working as intended; copy button states in update() part?
+				if( this._ignoreUntilPressedAgain[code] ) {
+					delete this._ignoreUntilPressedAgain[code];
+					return false;
+				}
+
+				if( forget ) {
+					this._ignoreUntilPressedAgain[code] = true;
+				}
+
 				return true;
 			}
 		}
@@ -290,8 +361,8 @@ const Input = {
 	update() {
 		let gamepads = navigator.getGamepads();
 
-		for( let index in this.gamepads ) {
-			this.gamepads[index] = gamepads[index];
+		for( let gamepad of gamepads ) {
+			this.gamepads[gamepad.index] = gamepad;
 		}
 	}
 

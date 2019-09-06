@@ -13,47 +13,36 @@ class Level_1_2 extends Level {
 	constructor( player ) {
 		super();
 
+		let data = [
+			// [relative pos, symbol, timeout before note]
+
+			// Slow intro
+			[[0.35, 0.50], 20, 0.00],
+			[[0.45, 0.50], 21, 2.00],
+			[[0.55, 0.50], 22, 2.00],
+			[[0.65, 0.50], 23, 2.00],
+
+			//
+			[[0.80, 0.10], 21, 2.00],
+			[[0.75, 0.10], 21, 0.50],
+			[[0.70, 0.10], 21, 0.50],
+			[[0.70, 0.20], 23, 0.25],
+			[[0.65, 0.20], 23, 0.25],
+			[[0.65, 0.10], 21, 0.75],
+			[[0.60, 0.10], 21, 0.50]
+		];
+
 		let t = 2;
-		let data = [];
 
-		// Circle.
-		let num = 15;
-		let minSize = Math.min( window.innerWidth, window.innerHeight ) * 0.8;
-		let offsetX = Renderer.centerX - minSize / 2;
-		let offsetY = Renderer.centerY - minSize / 2;
-
-		for( let i = 1; i <= num; i++ ) {
-			let key = 20 + Math.floor( i / 4 );
-			let step = i / num * Math.PI * 2;
-
-			let x = Math.sin( step ) + 1;
-			let y = Math.cos( step ) + 1;
-			x = Math.round( offsetX + x / 2 * minSize );
-			y = Math.round( offsetY + y / 2 * minSize );
-
-			data.push( [[x, y], key, t] );
-			t += 0.5;
-		}
-
-		// Diagonal line.
-		num = 12;
-		offsetX = 0.2 * Renderer.centerX;
-		offsetY = 0.2 * Renderer.centerY;
-
-		for( let i = 1; i <= num; i++ ) {
-			let key = ( i % 2 ) ? 23 : 22;
-			let step = 1 - i / num;
-			let x = Math.round( offsetX + step * window.innerWidth * 0.8 );
-			let y = Math.round( offsetY + step * window.innerHeight * 0.8 );
-
-			data.push( [[x, y], key, t] );
-			t += 0.4;
-		}
+		data.forEach( item => {
+			item[0][0] *= window.innerWidth;
+			item[0][1] *= window.innerHeight;
+			item[2] += t;
+			t = item[2];
+		} );
 
 		this.goal = Math.round( data.length * 0.8 );
 
-		this.bgLeftAlpha = 0;
-		this.bgRightAlpha = 0;
 		this.ghostY = 0;
 
 		player.orientationX = -1;
@@ -70,17 +59,24 @@ class Level_1_2 extends Level {
 
 			if( rating < 1 ) {
 				this.player.face = 2;
-
-				this.bgRightAlpha = 0.25;
 			}
 			else if( rating < 2 ) {
 				this.player.face = 3;
 			}
-			// >= 2
-			else if( rating > 1 ) {
-				this.bgLeftAlpha = 0.25;
+		};
+
+		this.rhythm.onDone = () => {
+			this.beat.pause();
+
+			if( this.rhythm.stats.correct >= this.goal ) {
+				// TODO:
+			}
+			else {
+				Renderer.level = new Level_1_1( this.rhythm.stats );
 			}
 		};
+
+		this.beat = GameAudio.play( 'beat', true, 1 );
 	}
 
 
@@ -120,11 +116,6 @@ class Level_1_2 extends Level {
 		ctx.fillStyle = `rgb(${ ~~r1 },${ ~~g1 },${ ~~b1 })`;
 		ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
 
-		if( this.bgRightAlpha > 0 ) {
-			ctx.fillStyle = `rgba(0,0,0,${ this.bgRightAlpha })`;
-			ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
-		}
-
 		// Diagonal splitting the screen vertically.
 		ctx.fillStyle = `rgb(${ ~~r2 },${ ~~g2 },${ ~~b2 })`;
 		ctx.beginPath();
@@ -134,11 +125,6 @@ class Level_1_2 extends Level {
 		ctx.lineTo( 0, window.innerHeight );
 		ctx.closePath();
 		ctx.fill();
-
-		if( this.bgLeftAlpha > 0 ) {
-			ctx.fillStyle = `rgba(0,0,0,${ this.bgLeftAlpha })`;
-			ctx.fill();
-		}
 
 		// Ghost
 		let ghostOffY = Math.round( Math.sin( this.ghostY ) * 50 );
@@ -164,15 +150,6 @@ class Level_1_2 extends Level {
 	 */
 	update( dt ) {
 		this.player.update( dt, { x: 0 } );
-
-		if( this.bgLeftAlpha > 0 ) {
-			this.bgLeftAlpha = Math.max( 0, this.bgLeftAlpha - dt * 0.05 );
-		}
-
-		if( this.bgRightAlpha > 0 ) {
-			this.bgRightAlpha = Math.max( 0, this.bgRightAlpha - dt * 0.05 );
-		}
-
 		this.ghostY = this.ghostY + dt * 0.05;
 
 		if( this.ghostY > Math.PI * 2 ) {

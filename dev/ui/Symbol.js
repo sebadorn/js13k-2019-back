@@ -44,6 +44,12 @@ const UI_Symbol = {
 			if( action === Input.ACTION.INTERACT ) {
 				action = Input.ACTION.FIGHT_1;
 			}
+			else if( action === Input.ACTION.FIGHT_3 ) {
+				action = Input.ACTION.UP;
+			}
+			else if( action === Input.ACTION.FIGHT_4 ) {
+				action = Input.ACTION.LEFT;
+			}
 		}
 
 		// Button background.

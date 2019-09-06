@@ -15,7 +15,7 @@ class Rhythm_Button {
 		this.pos = pos;
 		this.symbol = symbol;
 		this.time = time;
-		this.speed = 3;
+		this.speed = 2;
 
 		this.canBeRemoved = false;
 		this.isHit = 0;
@@ -23,7 +23,7 @@ class Rhythm_Button {
 		this.progress = 0;
 		this.diff = -1;
 
-		this.ui_rating = new UI_Text( '', 'bold 21px sans-serif', [255, 255, 255], 0, 0, true );
+		this.ui_rating = new UI_Text( '', '18px sans-serif', [255, 255, 255], 0, 0, true );
 	}
 
 
@@ -75,8 +75,8 @@ class Rhythm_Button {
 		if( this.isHit || this.wasWrong ) {
 			let rating = this.getRating();
 
-			this.ui_rating.x = x + 15;
-			this.ui_rating.y = y + 15;
+			this.ui_rating.x = x;
+			this.ui_rating.y = y - 45;
 			this.ui_rating.text = rating[1].toUpperCase();
 			this.ui_rating.draw( ctx );
 		}
