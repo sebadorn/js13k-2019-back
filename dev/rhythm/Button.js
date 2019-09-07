@@ -23,7 +23,7 @@ class Rhythm_Button {
 		this.progress = 0;
 		this.diff = -1;
 
-		this.ui_rating = new UI_Text( '', '18px sans-serif', [255, 255, 255], 0, 0, true );
+		this.ui_rating = new UI_Text( '', 'bold 18px sans-serif', [255, 255, 255], 0, 0, true );
 	}
 
 
@@ -78,6 +78,7 @@ class Rhythm_Button {
 			this.ui_rating.x = x;
 			this.ui_rating.y = y - 45;
 			this.ui_rating.text = rating[1].toUpperCase();
+			this.ui_rating.color[3] = Math.min( 1, 1 - this.progress + this.isHit );
 			this.ui_rating.draw( ctx );
 		}
 		// Show button prompt with timer.
@@ -198,6 +199,8 @@ class Rhythm_Button {
 			this.diff = diff;
 
 			if( check && diff >= Rhythm_Button.TIME_DIFF_MIN && diff <= Rhythm_Button.TIME_DIFF_MAX ) {
+				checkNext = false;
+
 				if( this.symbol === Input.ACTION.FIGHT_1 ) {
 					this._checkPressed( progress, pressed, 0 );
 				}
@@ -213,7 +216,6 @@ class Rhythm_Button {
 
 				if( this.isHit ) {
 					this.progress = progress;
-					checkNext = false;
 
 					if( !this.wasWrong ) {
 						GameAudio.play( 'hit' );

@@ -1,17 +1,14 @@
 'use strict';
 
 
-class Level_Intro extends Level {
+class Level_Intro {
 
 
 	/**
 	 *
 	 * @constructor
-	 * @extends {Level}
 	 */
 	constructor() {
-		super();
-
 		this.mod = new Moderation( Moderation.SCRIPT.INTRO );
 		this.progress = 0;
 		this.changeLevel = 0;

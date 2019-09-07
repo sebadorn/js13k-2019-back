@@ -67,10 +67,15 @@ Moderation.SCRIPT = {
 		[1, 0, ['Also, why is there an', String.fromCharCode( 8220 ) + 'emergency priest' + String.fromCharCode( 8221 ) + ' on standby?'], 4],
 		[0, 0, [], 1]
 	],
-	LEVEL_1: [
-		[0, 'Here we are! How exciting! This first episode will confront our participant with quite the novelty. In ...'],
-		[0, '... Say it with me John.'],
-		[1, "I've never seen a script. I have no idea what is going to happen."],
-		[0, 'HOW TO SEND BACK A GHOST!']
+	LEVEL_1_1: [
+		[0, 4, ['Here we are! How exciting! This first episode will', 'confront our participant with quite the novelty. In ...'], 5],
+		[0, 0, [], 1],
+		[0, 0, ['... Say it with me John.']],
+		[1, 0, [], 1],
+		[1, 0, ["I've never seen a script.", 'I have no idea what is going to happen.']],
+		[0, 0, [], 2],
+		[0, 4, [], 1],
+		[0, 0, [], 2],
+		[0, 4, ['HOW TO SEND BACK A GHOST!']]
 	]
 };

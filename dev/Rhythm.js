@@ -49,6 +49,35 @@ class Rhythm {
 
 	/**
 	 *
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number}                   goal
+	 */
+	drawResult( ctx, goal ) {
+		if( this.stats.correct >= goal ) {
+			ctx.fillStyle = '#C26F38';
+			ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
+			ctx.fillStyle = '#000';
+		}
+		else {
+			ctx.fillStyle = '#4B5E77';
+			ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
+			ctx.fillStyle = '#FFF';
+		}
+
+		let y = Renderer.centerY - 60;
+
+		ctx.font = 'bold 21px sans-serif';
+		ctx.textAlign = 'center';
+		ctx.fillText( `${ this.stats.correct }/${ this.stats.total }`, Renderer.centerX, y );
+		ctx.fillText( `REQUIRED: ${ goal }`, Renderer.centerX, y += 27 );
+
+		UI_Symbol.draw( ctx, Input.ACTION.INTERACT, [Renderer.centerX - 10, y += 67, 20] );
+		ctx.fillText( 'CONTINUE', Renderer.centerX, y += 47 );
+	}
+
+
+	/**
+	 *
 	 * @param {number} dt
 	 */
 	update( dt ) {

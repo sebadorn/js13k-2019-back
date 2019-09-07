@@ -27,6 +27,7 @@ const Input = {
 	// 3: XBox Controller
 	PROMPTS: 1,
 
+	_gpButtons: {},
 	_ignoreUntilPressedAgain: {},
 	_on: {
 		'esc': [],
@@ -363,6 +364,7 @@ const Input = {
 
 		for( let gamepad of gamepads ) {
 			this.gamepads[gamepad.index] = gamepad;
+			this._gpButtons[gamepad.index] = gamepad.buttons.slice( 0 );
 		}
 	}
 

@@ -1,35 +1,89 @@
 'use strict';
 
 
-class Level_1_2 extends Level {
+class Level_1_2 {
 
 
 	/**
 	 * Episode 1: How to send back a Ghost
 	 * Phase 2: Rhythm fight
 	 * @constructor
-	 * @param {Player} player
+	 * @param {Player}  player
+	 * @param {boolean} skipIntro
 	 */
-	constructor( player ) {
-		super();
-
+	constructor( player, skipIntro ) {
 		let data = [
-			// [relative pos, symbol, timeout before note]
+			// [relative pos, symbol, timeout before note is shown]
 
 			// Slow intro
-			[[0.35, 0.50], 20, 0.00],
+			[[0.35, 0.50], 20, 2.00],
 			[[0.45, 0.50], 21, 2.00],
 			[[0.55, 0.50], 22, 2.00],
 			[[0.65, 0.50], 23, 2.00],
 
-			//
-			[[0.80, 0.10], 21, 2.00],
-			[[0.75, 0.10], 21, 0.50],
+			// Warm-up (still intro)
+			[[0.80, 0.10], 21, 5.00],
 			[[0.70, 0.10], 21, 0.50],
-			[[0.70, 0.20], 23, 0.25],
-			[[0.65, 0.20], 23, 0.25],
-			[[0.65, 0.10], 21, 0.75],
-			[[0.60, 0.10], 21, 0.50]
+			[[0.60, 0.10], 23, 0.50],
+			[[0.50, 0.10], 23, 0.50],
+
+			[[0.70, 0.50], 20, 1.00],
+			[[0.60, 0.50], 20, 0.50],
+			[[0.50, 0.50], 22, 0.50],
+			[[0.40, 0.50], 22, 0.50],
+
+			// Getting serious
+
+			// Line 1
+			[[0.70, 0.25], 20, 7.00],
+			[[0.65, 0.25], 20, 0.50],
+			[[0.60, 0.20], 21, 0.50],
+			[[0.55, 0.15], 22, 0.50],
+			[[0.50, 0.15], 22, 0.50],
+			[[0.45, 0.20], 23, 0.50],
+			[[0.40, 0.20], 23, 0.50],
+			[[0.35, 0.15], 22, 0.50],
+			[[0.30, 0.25], 20, 0.50],
+
+			// Line 2
+			[[0.30, 0.80], 21, 1.00],
+			[[0.35, 0.75], 22, 0.50],
+			[[0.40, 0.85], 20, 0.50],
+			[[0.45, 0.75], 22, 0.50],
+			[[0.50, 0.85], 20, 0.50],
+			[[0.55, 0.80], 23, 0.50],
+			[[0.60, 0.80], 23, 0.50],
+			[[0.65, 0.80], 23, 0.50],
+			[[0.70, 0.80], 23, 0.50],
+
+			// Left - squiggly down - right
+			[[0.70, 0.40], 22, 0.50],
+			[[0.65, 0.40], 22, 0.50],
+			[[0.60, 0.40], 22, 0.50],
+			[[0.55, 0.40], 22, 0.50],
+			[[0.50, 0.40], 22, 0.50],
+			[[0.45, 0.45], 23, 0.50],
+			[[0.50, 0.50], 20, 0.50],
+			[[0.55, 0.55], 21, 0.50],
+			[[0.50, 0.65], 20, 0.50],
+			[[0.45, 0.70], 23, 0.50],
+			[[0.50, 0.75], 20, 0.50],
+			[[0.55, 0.80], 21, 0.50],
+			[[0.60, 0.80], 21, 0.50],
+			[[0.65, 0.80], 21, 0.50],
+
+			// Final
+			[[0.80, 0.70], 21, 1.00],
+			[[0.70, 0.70], 20, 1.00],
+			[[0.60, 0.60], 23, 1.00],
+			[[0.50, 0.50], 22, 1.00],
+			[[0.40, 0.40], 23, 1.00],
+			[[0.30, 0.30], 22, 1.00],
+			[[0.10, 0.35], 21, 1.00],
+			[[0.10, 0.50], 20, 0.50],
+			[[0.10, 0.65], 20, 0.50],
+			[[0.10, 0.80], 20, 0.50],
+			[[0.10, 0.80], 22, 2.00]
 		];
 
 		let t = 2;
@@ -41,39 +95,43 @@ class Level_1_2 extends Level {
 			t = item[2];
 		} );
 
-		this.goal = Math.round( data.length * 0.8 );
+		if( skipIntro ) {
+			data = data.slice( 12 );
+		}
 
-		this.ghostY = 0;
+		this.goal = Math.round( ( data.length - 12 ) * 0.8 );
 
 		player.orientationX = -1;
 		player.orientationY = 0;
 		player.lastDir = 0;
 		player.size = 10;
 		this.player = player;
+		this.ghostY = 0;
 
 		this.rhythm = new Rhythm( data, player.items );
+		this.isDone = 0;
+
+		if( skipIntro ) {
+			this.rhythm.time = 21;
+		}
 
 		this.rhythm.onNext = ( rating ) => {
 			// rating: -1 missed, 0 wrong, 1 bad, 2 okay, 3 good, 4 perfect
-			this.player.face = 1;
+			if( this.rhythm.time > 21 ) { // No face changes in the intro phase
+				this.player.face = 1;
 
-			if( rating < 1 ) {
-				this.player.face = 2;
-			}
-			else if( rating < 2 ) {
-				this.player.face = 3;
+				if( rating < 1 ) {
+					this.player.face = 2;
+				}
+				else if( rating < 2 ) {
+					this.player.face = 3;
+				}
 			}
 		};
 
 		this.rhythm.onDone = () => {
+			this.isDone = this.rhythm.time;
 			this.beat.pause();
-
-			if( this.rhythm.stats.correct >= this.goal ) {
-				// TODO:
-			}
-			else {
-				Renderer.level = new Level_1_1( this.rhythm.stats );
-			}
 		};
 
 		this.beat = GameAudio.play( 'beat', true, 1 );
@@ -85,60 +143,71 @@ class Level_1_2 extends Level {
 	 * @param {CanvasRenderingContext2D} ctx
 	 */
 	draw( ctx ) {
-		let stats = this.rhythm.stats;
-		let balance = stats.correct - stats.wrong - stats.missed;
-		let progress = Math.min( this.goal, balance ) / this.goal;
-
-		let x = Renderer.centerX * progress;
-		let over = window.innerWidth * 0.1;
-
-		let r1, g1, b1, r2, g2, b2;
-
-		if( balance < 0 ) {
-			r1 = ( 1 + progress ) * 26 - progress * 41;
-			g1 = ( 1 + progress ) * 31 - progress * 51;
-			b1 = ( 1 + progress ) * 38 - progress * 64;
-
-			r2 = 26;
-			g2 = 31;
-			b2 = 38;
-		}
-		else {
-			r1 = ( 1 - progress ) * 26 + progress * 233;
-			g1 = ( 1 - progress ) * 31 + progress * 133;
-			b1 = ( 1 - progress ) * 38 + progress *  64;
-
-			r2 = ( 1 - progress ) * 26 + progress * 233;
-			g2 = ( 1 - progress ) * 31 + progress * 133;
-			b2 = ( 1 - progress ) * 38 + progress *  64;
+		if( this.isDone ) {
+			this.rhythm.drawResult( ctx, this.goal );
+			return;
 		}
 
-		ctx.fillStyle = `rgb(${ ~~r1 },${ ~~g1 },${ ~~b1 })`;
+		ctx.fillStyle = `rgb(41,51,64)`;
 		ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
 
-		// Diagonal splitting the screen vertically.
-		ctx.fillStyle = `rgb(${ ~~r2 },${ ~~g2 },${ ~~b2 })`;
-		ctx.beginPath();
-		ctx.moveTo( 0, 0 );
-		ctx.lineTo( Renderer.centerX + over - x, 0 );
-		ctx.lineTo( Renderer.centerX - over - x, window.innerHeight );
-		ctx.lineTo( 0, window.innerHeight );
-		ctx.closePath();
-		ctx.fill();
-
 		// Ghost
-		let ghostOffY = Math.round( Math.sin( this.ghostY ) * 50 );
+		if( this.rhythm.time >= 22 ) {
+			let alpha = Math.min( 1, this.rhythm.time - 22 );
+			let ghostOffY = Math.round( Math.sin( this.ghostY ) * 50 );
 
-		ctx.translate( 160, 320 );
-		ctx.rotate( 15 * Math.PI / 180 );
-		ctx.translate( -160, -320 - ghostOffY );
-		ctx.drawImage( Renderer.sprites.gh, 0, 0, 16, 32, 0, 0, 320, 640 );
-		ctx.setTransform( 1, 0, 0, 1, 0, 0 );
+			ctx.globalAlpha = alpha;
+			ctx.translate( 160, 320 );
+			ctx.rotate( 15 * Math.PI / 180 );
+			ctx.translate( -160, -320 - ghostOffY );
+			ctx.drawImage( Renderer.sprites.gh, 0, 0, 16, 32, 0, 0, 320, 640 );
+			ctx.setTransform( 1, 0, 0, 1, 0, 0 );
+
+
+			// Progress bar
+
+			let stats = this.rhythm.stats;
+			let balance = stats.correct - stats.wrong - stats.missed;
+			let progress = Math.min( this.goal, balance ) / this.goal;
+
+			let width = Math.round( window.innerWidth / 3 );
+			let x = Renderer.centerX - Math.round( width / 2 );
+
+			// Border
+			ctx.fillStyle = '#000';
+			ctx.fillRect( x - 5, window.innerHeight - 115, 5, 15 );
+			ctx.fillRect( x, window.innerHeight - 120, width, 5 );
+			ctx.fillRect( x, window.innerHeight - 100, width, 5 );
+			ctx.fillRect( x + width, window.innerHeight - 115, 5, 15 );
+
+			// Ghost energy
+			let playerWidth = Math.round( progress * width );
+			ctx.fillStyle = '#4B5E77';
+			ctx.fillRect( x, window.innerHeight - 115, width - playerWidth, 15 );
+			// Player energy
+			ctx.fillStyle = '#C26F38';
+			ctx.fillRect( x + width - playerWidth, window.innerHeight - 115, playerWidth, 15 );
+
+			ctx.globalAlpha = 1;
+		}
 
 		// Player
 		this.player.x = window.innerWidth - this.player.width - 80;
 		this.player.y = window.innerHeight - this.player.height;
 		this.player.draw( ctx );
+
+		ctx.font = 'bold 21px sans-serif';
+		ctx.textAlign = 'center';
+
+		if( this.rhythm.time < 11 ) {
+			ctx.fillText( 'Hit the button shortly before its timer runs out:'.toUpperCase(), Renderer.centerX, window.innerHeight * 0.3 );
+		}
+		else if( this.rhythm.time < 13 ) {
+			ctx.fillText( 'Now faster.'.toUpperCase(), Renderer.centerX, window.innerHeight * 0.4);
+		}
+		else if( this.rhythm.time > 20 && this.rhythm.time < 24 ) {
+			ctx.fillText( 'Time for the real deal.'.toUpperCase(), Renderer.centerX, window.innerHeight * 0.4);
+		}
 
 		this.rhythm.draw( ctx );
 	}
@@ -149,6 +218,16 @@ class Level_1_2 extends Level {
 	 * @param {number} dt
 	 */
 	update( dt ) {
+		if( this.isDone ) {
+			if( Input.isPressed( Input.ACTION.INTERACT ) ) {
+				Renderer.level = new Level_1_1( {
+					success: this.rhythm.stats.correct >= this.goal
+				} );
+			}
+
+			return;
+		}
+
 		this.player.update( dt, { x: 0 } );
 		this.ghostY = this.ghostY + dt * 0.05;
 

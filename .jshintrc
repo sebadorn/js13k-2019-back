@@ -9,9 +9,9 @@
 		"GameAudio": true,
 		"Input": true,
 		"Item": true,
-		"Level": true,
 		"Level_1_1": true,
 		"Level_1_2": true,
+		"Level_Credits": true,
 		"Level_Intro": true,
 		"Level_Start": true,
 		"Moderation": true,
@@ -19,7 +19,6 @@
 		"Renderer": true,
 		"Rhythm": true,
 		"Rhythm_Button": true,
-		"UI_Bar": true,
 		"UI_Symbol": true,
 		"UI_Text": true
 	},

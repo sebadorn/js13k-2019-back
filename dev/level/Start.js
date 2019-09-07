@@ -1,17 +1,14 @@
 'use strict';
 
 
-class Level_Start extends Level {
+class Level_Start {
 
 
 	/**
 	 *
 	 * @constructor
-	 * @extends {Level}
 	 */
 	constructor() {
-		super();
-
 		this.ui_title = new UI_Text( 'How to send back...', 'italic 72px serif', [255, 255, 255], 0, 0, true );
 		this.ui_gp = new UI_Text(
 			// Why toUpperCase() instead of just writing it? Because
