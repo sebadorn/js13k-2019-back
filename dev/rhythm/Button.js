@@ -244,5 +244,5 @@ class Rhythm_Button {
 }
 
 
-Rhythm_Button.TIME_DIFF_MIN = -0.1;
-Rhythm_Button.TIME_DIFF_MAX = 1.5;
+Rhythm_Button.TIME_DIFF_MIN = -0.05;
+Rhythm_Button.TIME_DIFF_MAX = 1.15;

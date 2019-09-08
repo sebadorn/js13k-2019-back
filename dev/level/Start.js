@@ -92,9 +92,6 @@ class Level_Start {
 			this.player.update( dt, { x: 1, y: 0 } );
 		}
 		else if( Input.isPressed( Input.ACTION.INTERACT, true ) ) {
-			new Level_Intro();
-			new Level_1_2( {} );
-
 			this.walk = true;
 		}
 		// Readjust character x position in case window width changes.

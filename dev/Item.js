@@ -8,15 +8,20 @@ class Item {
 	 * Item for player.
 	 * @constructor
 	 * @param {string}   name
+	 * @param {string}   desc
+	 * @param {object}   effect
 	 * @param {number}   x
 	 * @param {number}   y
 	 * @param {number}   size
 	 * @param {function} fnDraw
 	 */
-	constructor( name, x, y, size, fnDraw ) {
+	constructor( name, desc, effect, x, y, size, fnDraw ) {
 		this.name = name;
-		this.centerX = x; // Overwritten in draw function.
+		this.desc = desc.split( '\n' );
+		this.effect = effect;
 		this.collected = false;
+
+		this.centerX = x; // Overwritten in draw function.
 		this.x = x;
 		this.y = y;
 		this.size = size;

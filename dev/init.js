@@ -8,7 +8,9 @@ Renderer.init( () => {
 		Input.init();
 
 		new Level_Intro();
-		Renderer.level = new Level_1_1( { success: false } );
+		let level = new Level_Intro();
+		// let level = new Level_1_1( { success: false } );
+		Renderer.changeLevel( new Level_Credits() );
 		Renderer.mainLoop();
 	} );
 } );

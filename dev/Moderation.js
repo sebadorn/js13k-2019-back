@@ -68,14 +68,10 @@ Moderation.SCRIPT = {
 		[0, 0, [], 1]
 	],
 	LEVEL_1_1: [
-		[0, 4, ['Here we are! How exciting! This first episode will', 'confront our participant with quite the novelty. In ...'], 5],
-		[0, 0, [], 1],
-		[0, 0, ['... Say it with me John.']],
+		[0, 4, ['Here we are! This first episode!', 'How to send back… a ghost!'], 5],
 		[1, 0, [], 1],
-		[1, 0, ["I've never seen a script.", 'I have no idea what is going to happen.']],
-		[0, 0, [], 2],
-		[0, 4, [], 1],
-		[0, 0, [], 2],
-		[0, 4, ['HOW TO SEND BACK A GHOST!']]
+		[1, 0, ['What?'], 2],
+		[1, 0, [], 1],
+		[0, 4, ['How to send back a ghost!']]
 	]
 };

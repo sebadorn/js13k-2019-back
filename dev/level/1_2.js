@@ -95,11 +95,28 @@ class Level_1_2 {
 			t = item[2];
 		} );
 
+		// Intro is not part of the goal.
+		let goalPercent = 0.8;
+
+		player.items.forEach( item => {
+			if( !item.effect ) {
+				return;
+			}
+
+			if( item.effect.goal ) {
+				goalPercent = Math.min( goalPercent, item.effect.goal );
+			}
+
+			if( item.effect.time ) {
+				Rhythm_Button.TIME_DIFF_MAX = Math.max( Rhythm_Button.TIME_DIFF_MAX, item.effect.time );
+			}
+		} );
+
+		this.goal = Math.round( ( data.length - 12 ) * goalPercent );
+
 		if( skipIntro ) {
 			data = data.slice( 12 );
 		}
-
-		this.goal = Math.round( ( data.length - 12 ) * 0.8 );
 
 		player.orientationX = -1;
 		player.orientationY = 0;
@@ -108,7 +125,7 @@ class Level_1_2 {
 		this.player = player;
 		this.ghostY = 0;
 
-		this.rhythm = new Rhythm( data, player.items );
+		this.rhythm = new Rhythm( data );
 		this.isDone = 0;
 
 		if( skipIntro ) {
@@ -131,7 +148,16 @@ class Level_1_2 {
 
 		this.rhythm.onDone = () => {
 			this.isDone = this.rhythm.time;
-			this.beat.pause();
+
+			let interval = setInterval( () => {
+				if( this.beat.volume <= 0 || this.beat.paused ) {
+					this.beat.pause();
+					clearInterval( interval );
+				}
+				else {
+					this.beat.volume -= 0.1;
+				}
+			}, 250 );
 		};
 
 		this.beat = GameAudio.play( 'beat', true, 1 );
@@ -169,9 +195,11 @@ class Level_1_2 {
 			let stats = this.rhythm.stats;
 			let balance = stats.correct - stats.wrong - stats.missed;
 			let progress = Math.min( this.goal, balance ) / this.goal;
+			progress = Math.min( 1, Math.max( 0, progress ) );
 
 			let width = Math.round( window.innerWidth / 3 );
 			let x = Renderer.centerX - Math.round( width / 2 );
+			let marker = Math.round( ( 1 - this.goal / stats.total ) * width );
 
 			// Border
 			ctx.fillStyle = '#000';
@@ -187,6 +215,9 @@ class Level_1_2 {
 			// Player energy
 			ctx.fillStyle = '#C26F38';
 			ctx.fillRect( x + width - playerWidth, window.innerHeight - 115, playerWidth, 15 );
+
+			ctx.fillStyle = '#000';
+			ctx.fillRect( x + marker, window.innerHeight - 115, 2, 15 );
 
 			ctx.globalAlpha = 1;
 		}
@@ -220,9 +251,12 @@ class Level_1_2 {
 	update( dt ) {
 		if( this.isDone ) {
 			if( Input.isPressed( Input.ACTION.INTERACT ) ) {
-				Renderer.level = new Level_1_1( {
+				let level = new Level_1_1( {
+					items: this.player.items,
 					success: this.rhythm.stats.correct >= this.goal
 				} );
+
+				Renderer.changeLevel( level );
 			}
 
 			return;

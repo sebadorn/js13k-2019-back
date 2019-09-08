@@ -41,7 +41,7 @@ class Level_Intro {
 		if( this.changeLevel ) {
 			if( this.progress - this.changeLevel >= 2 ) {
 				Renderer.drawBorder();
-				Renderer.level = new Level_Start();
+				Renderer.changeLevel( new Level_Start() );
 
 				return;
 			}
@@ -147,7 +147,11 @@ class Level_Intro {
 	 */
 	update( dt ) {
 		// Skip the intro.
-		if( this.progress > 1.5 && Input.isPressed( Input.ACTION.INTERACT, true ) ) {
+		if(
+			!this.changeLevel &&
+			this.progress > 1.5 &&
+			Input.isPressed( Input.ACTION.INTERACT, true )
+		) {
 			this.progress += dt / Renderer.TARGET_FPS;
 			this.changeLevel = this.progress;
 

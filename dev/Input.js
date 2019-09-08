@@ -28,7 +28,7 @@ const Input = {
 	PROMPTS: 1,
 
 	_gpButtons: {},
-	_ignoreUntilPressedAgain: {},
+	_ignoreUntilReleased: {},
 	_on: {
 		'esc': [],
 		'gp_connect': [],
@@ -96,7 +96,7 @@ const Input = {
 
 			case this.ACTION.FIGHT_4:
 				kb.push( 37, 65 ); // LEFT, A
-				gp.push( 2, 14 );
+				gp.push( 3, 14 );
 				break;
 
 			case this.ACTION.UP:
@@ -106,7 +106,7 @@ const Input = {
 
 			case this.ACTION.FIGHT_3:
 				kb.push( 38, 87 ); // UP, W
-				gp.push( 3, 12 );
+				gp.push( 2, 12 );
 				break;
 
 			case this.ACTION.RIGHT:
@@ -189,6 +189,7 @@ const Input = {
 
 			this.numGamepads++;
 			this.gamepads[ev.gamepad.index] = ev.gamepad;
+
 			this._on.gp_connect.forEach( cb => cb() );
 		} );
 
@@ -197,6 +198,7 @@ const Input = {
 
 			this.numGamepads--;
 			delete this.gamepads[ev.gamepad.index];
+
 			this._on.gp_disconnect.forEach( cb => cb() );
 		} );
 	},
@@ -224,38 +226,84 @@ const Input = {
 		}
 
 		// Also check axes.
-		if( action === this.ACTION.LEFT || action === this.ACTION.FIGHT_4 ) {
+		// Has to be done as workaround for Firefox.
+		// @see https://bugzilla.mozilla.org/show_bug.cgi?id=1464940
+		if(
+			action === this.ACTION.LEFT ||
+			action === this.ACTION.FIGHT_4
+		) {
 			for( let index in this.gamepads ) {
 				let gp = this.gamepads[index];
 
 				if( gp.axes[6] && gp.axes[6] <= -0.2 ) {
+					if( this._ignoreUntilReleased['axis6-'] ) {
+						return false;
+					}
+
+					if( forget ) {
+						this._ignoreUntilReleased['axis6-'] = true;
+					}
+
 					return true;
 				}
 			}
 		}
-		else if( action === this.ACTION.RIGHT ) {
+		else if(
+			action === this.ACTION.RIGHT ||
+			action === this.ACTION.FIGHT_2
+		) {
 			for( let index in this.gamepads ) {
 				let gp = this.gamepads[index];
 
 				if( gp.axes[6] && gp.axes[6] >= 0.2 ) {
+					if( this._ignoreUntilReleased['axis6+'] ) {
+						return false;
+					}
+
+					if( forget ) {
+						this._ignoreUntilReleased['axis6+'] = true;
+					}
+
 					return true;
 				}
 			}
 		}
-		else if( action === this.ACTION.UP || action === this.ACTION.FIGHT_3 ) {
+		else if(
+			action === this.ACTION.UP ||
+			action === this.ACTION.FIGHT_3
+		) {
 			for( let index in this.gamepads ) {
 				let gp = this.gamepads[index];
 
 				if( gp.axes[7] && gp.axes[7] <= -0.2 ) {
+					if( this._ignoreUntilReleased['axis7-'] ) {
+						return false;
+					}
+
+					if( forget ) {
+						this._ignoreUntilReleased['axis7-'] = true;
+					}
+
 					return true;
 				}
 			}
 		}
-		else if( action === this.ACTION.DOWN ) {
+		else if(
+			action === this.ACTION.DOWN ||
+			action === this.ACTION.FIGHT_1
+		) {
 			for( let index in this.gamepads ) {
 				let gp = this.gamepads[index];
 
 				if( gp.axes[7] && gp.axes[7] >= 0.2 ) {
+					if( this._ignoreUntilReleased['axis7+'] ) {
+						return false;
+					}
+
+					if( forget ) {
+						this._ignoreUntilReleased['axis7+'] = true;
+					}
+
 					return true;
 				}
 			}
@@ -273,18 +321,16 @@ const Input = {
 	 */
 	isPressedGamepad( code, forget ) {
 		for( let index in this.gamepads ) {
-			let gp = this.gamepads[index];
-			let button = gp.buttons[code];
+			let buttons = this.gamepads[index].buttons;
+			let button = buttons[code];
 
 			if( button && button.pressed ) {
-				// TODO: not working as intended; copy button states in update() part?
-				if( this._ignoreUntilPressedAgain[code] ) {
-					delete this._ignoreUntilPressedAgain[code];
+				if( this._ignoreUntilReleased[code] ) {
 					return false;
 				}
 
 				if( forget ) {
-					this._ignoreUntilPressedAgain[code] = true;
+					this._ignoreUntilReleased[code] = true;
 				}
 
 				return true;
@@ -364,7 +410,22 @@ const Input = {
 
 		for( let gamepad of gamepads ) {
 			this.gamepads[gamepad.index] = gamepad;
-			this._gpButtons[gamepad.index] = gamepad.buttons.slice( 0 );
+
+			for( let code in this._ignoreUntilReleased ) {
+				if( code === 'axis6-' || code === 'axis6+' ) {
+					if( !gamepad.axes[6] ) {
+						delete this._ignoreUntilReleased[code];
+					}
+				}
+				else if( code === 'axis7-' || code === 'axis7+' ) {
+					if( !gamepad.axes[7] ) {
+						delete this._ignoreUntilReleased[code];
+					}
+				}
+				else if( gamepad.buttons[code] && !gamepad.buttons[code].pressed ) {
+					delete this._ignoreUntilReleased[code];
+				}
+			}
 		}
 	}
 

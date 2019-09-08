@@ -8,10 +8,8 @@ class Rhythm {
 	 * Rhythm game.
 	 * @constructor
 	 * @param {Array[]} data
-	 * @param {Item}    item - Item which can influence the difficulty.
 	 */
-	constructor( data, item ) {
-		this.item = item;
+	constructor( data ) {
 		this.time = 0;
 
 		this.stats = {
@@ -72,7 +70,7 @@ class Rhythm {
 		ctx.fillText( `REQUIRED: ${ goal }`, Renderer.centerX, y += 27 );
 
 		UI_Symbol.draw( ctx, Input.ACTION.INTERACT, [Renderer.centerX - 10, y += 67, 20] );
-		ctx.fillText( 'CONTINUE', Renderer.centerX, y += 47 );
+		ctx.fillText( 'CONTINUE', Renderer.centerX, y += 67 );
 	}
 
 
