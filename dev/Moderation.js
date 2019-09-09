@@ -57,7 +57,7 @@ Moderation.SCRIPT = {
 		// Talker ID; player face; text lines; wait before showing the line
 		[1, 0, [], 1],
 		[0, 4, ['Welcome to a new season of HOW TO SEND BACK...!']],
-		[0, 4, ['Previously we informed our dear viewers on how', 'to return packets, unwanted gifts, and the like.'], 4],
+		[0, 4, ['Previously we informed our dear viewers on', 'how to return packets and the like.'], 4],
 		[0, 4, ['Honestly, the show did not very well.', 'But this time we made sure to spice things up!'], 4],
 		[0, 0, ['And we are joined by a real celebrity today!']],
 		[1, 4, ["Hi, I'm John from the finances section."]],

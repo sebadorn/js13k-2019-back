@@ -54,7 +54,7 @@ const UI_Symbol = {
 
 		// Button background.
 		ctx.beginPath();
-		ctx.fillStyle = '#000';
+		ctx.fillStyle = Renderer.COLOR.BLACK;
 		ctx.arc( x + sh, y + sh, Math.ceil( s[2] * 0.9 ), 0, Math.PI * 2 );
 		ctx.closePath();
 		ctx.fill();

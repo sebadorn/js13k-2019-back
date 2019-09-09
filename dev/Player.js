@@ -10,7 +10,7 @@ class Player {
 	 * @param {number} size
 	 */
 	constructor( size ) {
-		this.color = '#000';
+		this.color = Renderer.COLOR.BLACK;
 		this.face = 0;
 		this.frameX = 0;
 		this.items = [];

@@ -1,17 +1,20 @@
 'use strict';
 
 
-class Level_1_1 {
+class Level_1_1 extends Level {
 
 
 	/**
 	 * Episode 1: How to send back a Ghost
 	 * @constructor
+	 * @extends {Level}
 	 * @param {?object} flags
 	 * @param {Item[]}  flags.items   - Previously collected items.
 	 * @param {boolean} flags.success
 	 */
 	constructor( flags ) {
+		super();
+
 		document.head.querySelector( 'title' ).textContent = 'S2E1: How to send back a ghost';
 
 		this.flags = flags || {};
@@ -56,13 +59,11 @@ class Level_1_1 {
 		this.ghostDir = 1;
 		this.ghostY = 0;
 
-		this.progress = 0;
-
 		if( !this.flags.success ) {
 			this.mod = new Moderation( Moderation.SCRIPT.LEVEL_1_1 );
 
 			this.mod1 = new Player( 3 );
-			this.mod1.color = '#77172F';
+			this.mod1.color = Renderer.COLOR.MOD_1;
 			this.mod1.face = 4;
 			this.mod1.orientationX = 1;
 			this.mod1.progress = 10;
@@ -70,7 +71,7 @@ class Level_1_1 {
 			this.mod1.y = 80;
 
 			this.mod2 = new Player( 3 );
-			this.mod2.color = '#3B5C2B';
+			this.mod2.color = Renderer.COLOR.MOD_2;
 			this.mod2.face = 4;
 			this.mod2.orientationX = -1;
 			this.mod2.progress = 35;
@@ -92,7 +93,7 @@ class Level_1_1 {
 	_drawDesc( ctx, height, item ) {
 		let x = Renderer.centerX - 200;
 
-		ctx.fillStyle = '#FFF';
+		ctx.fillStyle = Renderer.COLOR.WHITE;
 		ctx.font = 'bold italic 21px sans-serif';
 		ctx.textAlign = 'left';
 		ctx.fillText( item.name.toUpperCase(), x, height + 76 );
@@ -102,7 +103,7 @@ class Level_1_1 {
 			ctx.fillText( t, x, height + 112 + i * 36 );
 		} );
 
-		ctx.fillStyle = '#4B5E77';
+		ctx.fillStyle = Renderer.COLOR.BLUE_1;
 		ctx.fillRect( x - 20, height + 30, 440, 10 );
 		ctx.fillRect( x - 20, height + 170, 440, 10 );
 		ctx.fillRect( x - 30, height + 40, 10, 130 );
@@ -117,7 +118,7 @@ class Level_1_1 {
 	 * @param {number}                   height
 	 */
 	_drawMirror( ctx, height ) {
-		ctx.strokeStyle = '#000';
+		ctx.strokeStyle = Renderer.COLOR.BLACK;
 		ctx.lineWidth = 4;
 		ctx.strokeRect( window.innerWidth - 240, height - 160, 120, 120 );
 
@@ -159,7 +160,7 @@ class Level_1_1 {
 		let height = this.mod1.height + 80;
 		let textWidth = Math.min( 420, window.innerWidth - 40 - width );
 
-		ctx.fillStyle = '#000';
+		ctx.fillStyle = Renderer.COLOR.BLACK;
 		ctx.fillRect( 20, 20, width, height );
 		ctx.fillStyle = 'rgba(0,0,0,0.5)';
 		ctx.fillRect( 20 + width, 20, textWidth, height );
@@ -168,7 +169,7 @@ class Level_1_1 {
 			let x = 50;
 			let y = 65;
 
-			ctx.fillStyle = '#FFF';
+			ctx.fillStyle = Renderer.COLOR.WHITE;
 			ctx.font = '21px sans-serif';
 			ctx.textAlign = 'left';
 
@@ -290,7 +291,7 @@ class Level_1_1 {
 		ctx.lineTo( 0, height );
 		ctx.closePath();
 		ctx.fill();
-		ctx.fillStyle = '#000';
+		ctx.fillStyle = Renderer.COLOR.BLACK;
 		ctx.fillRect( 0, height - 340, 5, 340 );
 
 		// Lamp
@@ -300,7 +301,7 @@ class Level_1_1 {
 		ctx.lineTo( Renderer.centerX, height - 500 );
 		ctx.closePath();
 		ctx.stroke();
-		ctx.fillStyle = '#000';
+		ctx.fillStyle = Renderer.COLOR.BLACK;
 		ctx.fillRect( Renderer.centerX - 50, height - 500, 100, 50 );
 
 		// Ghost
@@ -349,7 +350,7 @@ class Level_1_1 {
 		this.player.draw( ctx );
 
 		// Bottom border / Floor
-		ctx.fillStyle = '#293340';
+		ctx.fillStyle = Renderer.COLOR.BLUE_2;
 		ctx.fillRect( 0, height, window.innerWidth, window.innerHeight - height );
 		ctx.lineWidth = 10;
 		ctx.beginPath();
@@ -375,7 +376,7 @@ class Level_1_1 {
 				width = 0;
 			}
 
-			ctx.fillStyle = '#C26F38';
+			ctx.fillStyle = Renderer.COLOR.ORANGE;
 			ctx.fillRect( Renderer.centerX - Math.round( width / 2 ), height, width, 10 );
 		}
 
@@ -405,7 +406,7 @@ class Level_1_1 {
 	 * @param {number} dt
 	 */
 	update( dt ) {
-		this.progress += dt / Renderer.TARGET_FPS;
+		super.update( dt );
 
 		if( !this.flags.success ) {
 			this.mod.update( dt );
@@ -448,7 +449,7 @@ class Level_1_1 {
 
 			this.player.update( dt, { x: 0, y } );
 
-			if( this.progress >= 12 ) {
+			if( this.progress >= 14 ) {
 				Renderer.changeLevel( new Level_Credits() );
 			}
 		}

@@ -9,6 +9,7 @@
 		"GameAudio": true,
 		"Input": true,
 		"Item": true,
+		"Level": true,
 		"Level_1_1": true,
 		"Level_1_2": true,
 		"Level_Credits": true,

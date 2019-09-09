@@ -1,26 +1,28 @@
 'use strict';
 
 
-class Level_Intro {
+class Level_Intro extends Level {
 
 
 	/**
 	 *
 	 * @constructor
+	 * @extends {Level}
 	 */
 	constructor() {
+		super();
+
 		this.mod = new Moderation( Moderation.SCRIPT.INTRO );
-		this.progress = 0;
 		this.changeLevel = 0;
 		this.offsetX = 0;
 
 		this.mod1 = new Player( 10 );
-		this.mod1.color = '#77172F';
+		this.mod1.color = Renderer.COLOR.MOD_1;
 		this.mod1.face = 4;
 		this.mod1.orientationX = 1;
 
 		this.mod2 = new Player( 10 );
-		this.mod2.color = '#3B5C2B';
+		this.mod2.color = Renderer.COLOR.MOD_2;
 		this.mod2.face = 4;
 		this.mod2.progress = 10;
 
@@ -35,7 +37,7 @@ class Level_Intro {
 	 * @param {CanvasRenderingContext2D} ctx
 	 */
 	draw( ctx ) {
-		ctx.fillStyle = '#C26F38';
+		ctx.fillStyle = Renderer.COLOR.ORANGE;
 		ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
 
 		if( this.changeLevel ) {
@@ -48,7 +50,7 @@ class Level_Intro {
 		}
 
 		if( this.progress <= 1.5 ) {
-			ctx.fillStyle = '#000';
+			ctx.fillStyle = Renderer.COLOR.BLACK;
 			ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
 
 			if( this.progress >= 1 ) {
@@ -68,7 +70,7 @@ class Level_Intro {
 				let x = Math.round( Renderer.centerX - w / 2 );
 				let y = Math.round( Renderer.centerY - h / 2 );
 
-				ctx.fillStyle = '#C26F38';
+				ctx.fillStyle = Renderer.COLOR.ORANGE;
 				ctx.fillRect( x, y, w, h );
 			}
 		}
@@ -93,6 +95,7 @@ class Level_Intro {
 
 				ctx.fillStyle = 'rgba(0,0,0,0.5)';
 				ctx.font = '21px sans-serif';
+				ctx.textAlign = 'left';
 				ctx.textBaseline = 'top';
 
 				// Right
@@ -121,7 +124,7 @@ class Level_Intro {
 				ctx.fillRect( x, y, width, bubbleHeight );
 				ctx.fill();
 
-				ctx.fillStyle = '#FFF';
+				ctx.fillStyle = Renderer.COLOR.WHITE;
 
 				text.forEach( ( t, i ) => {
 					ctx.fillText( t, x + padding, y + padding + i * 32 );
@@ -134,6 +137,17 @@ class Level_Intro {
 				else {
 					this.mod1.face = face;
 				}
+			}
+
+			if( this.progress >= 5 && !this.changeLevel ) {
+				let yBtn = Math.round( this.mod1.y + this.mod1.height / 2 ) - 40;
+				UI_Symbol.draw( ctx, Input.ACTION.INTERACT, [Renderer.centerX - 100, yBtn - 2, 20] );
+
+				ctx.font = '21px sans-serif';
+				ctx.fillStyle = Renderer.COLOR.WHITE;
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'top';
+				ctx.fillText( 'TO SKIP INTRO', Renderer.centerX + 20, yBtn );
 			}
 		}
 

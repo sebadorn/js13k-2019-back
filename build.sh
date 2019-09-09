@@ -39,6 +39,7 @@ $TERSER \
 	'GameAudio.js' \
 	'Input.js' \
 	'Item.js' \
+	'Level.js' \
 	'level/Credits.js' \
 	'level/Start.js' \
 	'level/Intro.js' \

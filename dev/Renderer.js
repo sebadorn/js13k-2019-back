@@ -7,6 +7,17 @@
 const Renderer = {
 
 
+	COLOR: {
+		BLACK: '#000',
+		BLUE_1: '#4B5E77',
+		BLUE_2: '#293340',
+		BLUE_3: '#1A1F26',
+		MOD_1: '#7D3A19',
+		MOD_2: '#37536E',
+		ORANGE: '#C26F38',
+		WHITE: '#FFF'
+	},
+
 	TARGET_FPS: 60,
 
 	last: 0,
@@ -50,7 +61,7 @@ const Renderer = {
 	 */
 	drawBorder() {
 		this.ctx.lineWidth = 100;
-		this.ctx.strokeStyle = '#1A1F26';
+		this.ctx.strokeStyle = Renderer.COLOR.BLUE_3;
 		this.ctx.strokeRect( 0, 0, window.innerWidth, window.innerHeight );
 	},
 
@@ -61,7 +72,7 @@ const Renderer = {
 	drawPause() {
 		this.clear();
 
-		this.ctx.fillStyle = '#C26F38';
+		this.ctx.fillStyle = Renderer.COLOR.ORANGE;
 		this.ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
 
 		this.ui_pause.centerX();

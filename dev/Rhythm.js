@@ -52,14 +52,14 @@ class Rhythm {
 	 */
 	drawResult( ctx, goal ) {
 		if( this.stats.correct >= goal ) {
-			ctx.fillStyle = '#C26F38';
+			ctx.fillStyle = Renderer.COLOR.ORANGE;
 			ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
 			ctx.fillStyle = '#000';
 		}
 		else {
-			ctx.fillStyle = '#4B5E77';
+			ctx.fillStyle = Renderer.COLOR.BLUE_1;
 			ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
-			ctx.fillStyle = '#FFF';
+			ctx.fillStyle = Renderer.COLOR.WHITE;
 		}
 
 		let y = Renderer.centerY - 60;

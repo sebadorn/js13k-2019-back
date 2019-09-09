@@ -1,14 +1,17 @@
 'use strict';
 
 
-class Level_Start {
+class Level_Start extends Level {
 
 
 	/**
 	 *
 	 * @constructor
+	 * @extends {Level}
 	 */
 	constructor() {
+		super();
+
 		this.ui_title = new UI_Text( 'How to send back...', 'italic 72px serif', [255, 255, 255], 0, 0, true );
 		this.ui_gp = new UI_Text(
 			// Why toUpperCase() instead of just writing it? Because
@@ -30,7 +33,6 @@ class Level_Start {
 
 		this.offsetX = window.innerWidth;
 		this.player = new Player( 10 );
-		this.progress = 0;
 		this.walk = false;
 	}
 
@@ -66,7 +68,7 @@ class Level_Start {
 			this.offsetX = Math.round( pc * window.innerWidth );
 		}
 
-		this.progress += dt / Renderer.TARGET_FPS;
+		super.update( dt );
 
 		this.ui_title.y = Math.round( window.innerHeight / 3 );
 		this.ui_title.centerX();
