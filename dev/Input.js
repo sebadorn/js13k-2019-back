@@ -38,6 +38,7 @@ const Input = {
 	_onKeyDown: {},
 
 	gamepads: {},
+	isFirefox: false,
 	keystate: {},
 	numGamepads: 0,
 
@@ -96,7 +97,7 @@ const Input = {
 
 			case this.ACTION.FIGHT_4:
 				kb.push( 37, 65 ); // LEFT, A
-				gp.push( 3, 14 );
+				gp.push( this.isFirefox ? 3 : 2, 14 );
 				break;
 
 			case this.ACTION.UP:
@@ -106,7 +107,7 @@ const Input = {
 
 			case this.ACTION.FIGHT_3:
 				kb.push( 38, 87 ); // UP, W
-				gp.push( 2, 12 );
+				gp.push( this.isFirefox ? 2 : 3, 12 );
 				break;
 
 			case this.ACTION.RIGHT:
@@ -141,6 +142,9 @@ const Input = {
 	 * Initialize the input handler.
 	 */
 	init() {
+		let ua = String( navigator.userAgent ).toLowerCase();
+		this.isFirefox = ( ua.indexOf( 'firefox' ) >= 0 );
+
 		document.body.onkeydown = ( ev ) => {
 			let ks = this.keystate[ev.which];
 
@@ -409,6 +413,11 @@ const Input = {
 		let gamepads = navigator.getGamepads();
 
 		for( let gamepad of gamepads ) {
+			// Chromium has 4 indices, but they may be null as value.
+			if( !gamepad ) {
+				continue;
+			}
+
 			this.gamepads[gamepad.index] = gamepad;
 
 			for( let code in this._ignoreUntilReleased ) {

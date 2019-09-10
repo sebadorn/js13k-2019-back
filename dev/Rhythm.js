@@ -21,6 +21,7 @@ class Rhythm {
 		};
 
 		this.buttons = [];
+		this.ignoreUntil = -1;
 
 		data.forEach( note => {
 			this.buttons.push( new Rhythm_Button( ...note ) );
@@ -55,6 +56,10 @@ class Rhythm {
 			ctx.fillStyle = Renderer.COLOR.ORANGE;
 			ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
 			ctx.fillStyle = '#000';
+
+			ctx.font = 'bold italic 56px serif';
+			ctx.textAlign = 'center';
+			ctx.fillText( 'WELL DONE!', Renderer.centerX, Math.max( 40, Renderer.centerY - 220 ) );
 		}
 		else {
 			ctx.fillStyle = Renderer.COLOR.BLUE_1;
@@ -62,15 +67,17 @@ class Rhythm {
 			ctx.fillStyle = Renderer.COLOR.WHITE;
 		}
 
-		let y = Renderer.centerY - 60;
+		let y = Renderer.centerY - 80;
 
-		ctx.font = 'bold 21px sans-serif';
+		ctx.font = 'bold 56px sans-serif';
 		ctx.textAlign = 'center';
 		ctx.fillText( `${ this.stats.correct }/${ this.stats.total }`, Renderer.centerX, y );
-		ctx.fillText( `REQUIRED: ${ goal }`, Renderer.centerX, y += 27 );
 
-		UI_Symbol.draw( ctx, Input.ACTION.INTERACT, [Renderer.centerX - 10, y += 67, 20] );
-		ctx.fillText( 'CONTINUE', Renderer.centerX, y += 67 );
+		ctx.font = 'bold 21px sans-serif';
+		ctx.fillText( `REQUIRED: ${ goal }`, Renderer.centerX, y += 57 );
+
+		UI_Symbol.draw( ctx, Input.ACTION.INTERACT, [Renderer.centerX - 10, y += 87, 20] );
+		ctx.fillText( 'CONTINUE', Renderer.centerX, y += 87 );
 	}
 
 
@@ -91,7 +98,21 @@ class Rhythm {
 		let checkNext = true;
 
 		this.buttons.forEach( ( btn, i ) => {
-			checkNext = btn.update( this.time, pressed, checkNext, this.onNext );
+			if( this.time <= this.ignoreUntil ) {
+				checkNext = false;
+			}
+
+			checkNext = btn.update( this.time, pressed, checkNext, ( rating ) => {
+				// Try to avoid that an input for a missed note ruins
+				// the next one. But that's really hard to balance.
+				// Worst case it flips the problem and the correct input
+				// is not recognized in time.
+				if( rating === -1 ) {
+					this.ignoreUntil = this.time + 0.05;
+				}
+
+				this.onNext( rating );
+			} );
 
 			if( btn.canBeRemoved ) {
 				this.updateStats( btn );

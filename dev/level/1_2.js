@@ -25,15 +25,25 @@ class Level_1_2 extends Level {
 			[[0.65, 0.50], Input.ACTION.FIGHT_4, 2.00],
 
 			// Warm-up (still intro)
-			[[0.80, 0.10], Input.ACTION.FIGHT_2, 5.00],
-			[[0.70, 0.10], Input.ACTION.FIGHT_2, 0.50],
-			[[0.60, 0.10], Input.ACTION.FIGHT_4, 0.50],
-			[[0.50, 0.10], Input.ACTION.FIGHT_4, 0.50],
+			[[0.70, 0.20], Input.ACTION.FIGHT_2, 4.50],
+			[[0.65, 0.20], Input.ACTION.FIGHT_2, 0.50],
+			[[0.60, 0.20], Input.ACTION.FIGHT_4, 0.50],
+			[[0.55, 0.20], Input.ACTION.FIGHT_4, 0.50],
 
-			[[0.70, 0.50], Input.ACTION.FIGHT_1, 1.00],
-			[[0.60, 0.50], Input.ACTION.FIGHT_1, 0.50],
-			[[0.50, 0.50], Input.ACTION.FIGHT_3, 0.50],
-			[[0.40, 0.50], Input.ACTION.FIGHT_3, 0.50],
+			[[0.45, 0.20], Input.ACTION.FIGHT_2, 1.00],
+			[[0.40, 0.20], Input.ACTION.FIGHT_4, 0.50],
+			[[0.35, 0.20], Input.ACTION.FIGHT_2, 0.50],
+			[[0.30, 0.20], Input.ACTION.FIGHT_4, 0.50],
+
+			[[0.70, 0.70], Input.ACTION.FIGHT_1, 1.50],
+			[[0.65, 0.70], Input.ACTION.FIGHT_1, 0.50],
+			[[0.60, 0.70], Input.ACTION.FIGHT_3, 0.50],
+			[[0.55, 0.70], Input.ACTION.FIGHT_3, 0.50],
+
+			[[0.45, 0.70], Input.ACTION.FIGHT_1, 1.00],
+			[[0.40, 0.70], Input.ACTION.FIGHT_3, 0.50],
+			[[0.35, 0.70], Input.ACTION.FIGHT_1, 0.50],
+			[[0.30, 0.70], Input.ACTION.FIGHT_3, 0.50],
 
 			// Getting serious
 
@@ -60,33 +70,51 @@ class Level_1_2 extends Level {
 			[[0.70, 0.80], Input.ACTION.FIGHT_4, 0.50],
 
 			// Left - squiggly down - right
-			[[0.70, 0.40], Input.ACTION.FIGHT_3, 1.50],
-			[[0.65, 0.40], Input.ACTION.FIGHT_3, 0.50],
-			[[0.60, 0.40], Input.ACTION.FIGHT_3, 0.50],
-			[[0.55, 0.40], Input.ACTION.FIGHT_3, 0.50],
-			[[0.50, 0.40], Input.ACTION.FIGHT_3, 0.50],
-			[[0.45, 0.45], Input.ACTION.FIGHT_4, 0.50],
-			[[0.50, 0.50], Input.ACTION.FIGHT_1, 0.50],
-			[[0.55, 0.55], Input.ACTION.FIGHT_2, 0.50],
-			[[0.50, 0.65], Input.ACTION.FIGHT_1, 0.50],
-			[[0.45, 0.70], Input.ACTION.FIGHT_4, 0.50],
-			[[0.50, 0.75], Input.ACTION.FIGHT_1, 0.50],
-			[[0.55, 0.80], Input.ACTION.FIGHT_2, 0.50],
-			[[0.60, 0.80], Input.ACTION.FIGHT_2, 0.50],
-			[[0.65, 0.80], Input.ACTION.FIGHT_2, 0.50],
+			[[0.70, 0.20], Input.ACTION.FIGHT_3, 1.50],
+			[[0.65, 0.20], Input.ACTION.FIGHT_3, 0.50],
+			[[0.60, 0.20], Input.ACTION.FIGHT_3, 0.50],
+			[[0.55, 0.20], Input.ACTION.FIGHT_3, 0.50],
+			[[0.50, 0.20], Input.ACTION.FIGHT_3, 0.50],
+			[[0.45, 0.25], Input.ACTION.FIGHT_4, 0.50],
+			[[0.50, 0.30], Input.ACTION.FIGHT_1, 0.50],
+			[[0.55, 0.35], Input.ACTION.FIGHT_2, 0.50],
+			[[0.50, 0.45], Input.ACTION.FIGHT_1, 0.50],
+			[[0.45, 0.50], Input.ACTION.FIGHT_4, 0.50],
+			[[0.50, 0.55], Input.ACTION.FIGHT_1, 0.50],
+			[[0.55, 0.60], Input.ACTION.FIGHT_2, 0.50],
+			[[0.60, 0.60], Input.ACTION.FIGHT_2, 0.50],
+			[[0.65, 0.60], Input.ACTION.FIGHT_2, 0.50],
+
+			[[0.80, 0.40], Input.ACTION.FIGHT_4, 1.50],
+			[[0.75, 0.40], Input.ACTION.FIGHT_4, 0.50],
+			[[0.65, 0.40], Input.ACTION.FIGHT_1, 1.00],
+			[[0.65, 0.30], Input.ACTION.FIGHT_1, 0.50],
+			[[0.55, 0.30], Input.ACTION.FIGHT_2, 1.00],
+			[[0.50, 0.30], Input.ACTION.FIGHT_2, 0.50],
+			[[0.40, 0.30], Input.ACTION.FIGHT_3, 1.00],
+			[[0.40, 0.40], Input.ACTION.FIGHT_3, 0.50],
 
 			// Final
-			[[0.80, 0.70], Input.ACTION.FIGHT_2, 1.00],
-			[[0.70, 0.70], Input.ACTION.FIGHT_1, 1.00],
-			[[0.60, 0.60], Input.ACTION.FIGHT_4, 1.00],
-			[[0.50, 0.50], Input.ACTION.FIGHT_3, 1.00],
-			[[0.40, 0.40], Input.ACTION.FIGHT_4, 1.00],
-			[[0.30, 0.30], Input.ACTION.FIGHT_3, 1.00],
-			[[0.10, 0.35], Input.ACTION.FIGHT_2, 1.00],
-			[[0.10, 0.50], Input.ACTION.FIGHT_1, 0.50],
-			[[0.10, 0.65], Input.ACTION.FIGHT_1, 0.50],
-			[[0.10, 0.80], Input.ACTION.FIGHT_1, 0.50],
-			[[0.10, 0.80], Input.ACTION.FIGHT_3, 2.00]
+			[[0.80, 0.70], Input.ACTION.FIGHT_2, 1.50],
+			[[0.70, 0.70], Input.ACTION.FIGHT_1, 0.50],
+			[[0.65, 0.65], Input.ACTION.FIGHT_1, 0.50],
+			[[0.60, 0.60], Input.ACTION.FIGHT_4, 0.50],
+			[[0.55, 0.55], Input.ACTION.FIGHT_2, 0.50],
+			[[0.50, 0.50], Input.ACTION.FIGHT_3, 0.50],
+			[[0.45, 0.45], Input.ACTION.FIGHT_4, 0.50],
+			[[0.40, 0.40], Input.ACTION.FIGHT_4, 0.50],
+			[[0.35, 0.35], Input.ACTION.FIGHT_1, 0.50],
+			[[0.30, 0.30], Input.ACTION.FIGHT_3, 0.50],
+			[[0.25, 0.25], Input.ACTION.FIGHT_1, 0.50],
+
+			[[0.15, 0.20], Input.ACTION.FIGHT_1, 1.50],
+			[[0.15, 0.30], Input.ACTION.FIGHT_1, 0.50],
+			[[0.15, 0.40], Input.ACTION.FIGHT_1, 0.50],
+			[[0.15, 0.50], Input.ACTION.FIGHT_1, 0.50],
+			[[0.15, 0.60], Input.ACTION.FIGHT_1, 0.50],
+			[[0.15, 0.70], Input.ACTION.FIGHT_1, 0.50],
+			[[0.15, 0.70], Input.ACTION.FIGHT_3, 2.00],
+			[[0.15, 0.70], Input.ACTION.FIGHT_1, 2.00]
 		];
 
 		let t = 2;
@@ -153,7 +181,7 @@ class Level_1_2 extends Level {
 			this.isDone = this.rhythm.time;
 
 			let interval = setInterval( () => {
-				if( this.beat.volume <= 0 || this.beat.paused ) {
+				if( this.beat.volume < 0.1 || this.beat.paused ) {
 					this.beat.pause();
 					clearInterval( interval );
 				}
@@ -181,8 +209,8 @@ class Level_1_2 extends Level {
 		ctx.fillRect( 0, 0, window.innerWidth, window.innerHeight );
 
 		// Ghost
-		if( this.rhythm.time >= 22 ) {
-			let alpha = Math.min( 1, this.rhythm.time - 22 );
+		if( this.rhythm.time >= 27 ) {
+			let alpha = Math.min( 1, this.rhythm.time - 27 );
 			let ghostOffY = Math.round( Math.sin( this.ghostY ) * 50 );
 
 			ctx.globalAlpha = alpha;
@@ -239,7 +267,7 @@ class Level_1_2 extends Level {
 		else if( this.rhythm.time < 13 ) {
 			ctx.fillText( 'Now faster.'.toUpperCase(), Renderer.centerX, window.innerHeight * 0.4);
 		}
-		else if( this.rhythm.time > 20 && this.rhythm.time < 24 ) {
+		else if( this.rhythm.time > 25 && this.rhythm.time < 29 ) {
 			ctx.fillText( 'Time for the real deal.'.toUpperCase(), Renderer.centerX, window.innerHeight * 0.4);
 		}
 

@@ -206,6 +206,10 @@ class Level_1_1 extends Level {
 	checkItems( ctx, height ) {
 		this.ui_collect.visible = false;
 
+		if( this.flags.success ) {
+			return;
+		}
+
 		this.items.forEach( ( item, i ) => {
 			if( item.collected ) {
 				return;
