@@ -15,7 +15,7 @@ As alternative for the [W] and [A] button prompts, the up and left arrow keys ca
 
 ## GitHub
 
-https://github.com/sebadorn/js13k-2019-offline
+https://github.com/sebadorn/js13k-2019-back
 
 
 ## Third-party libraries
