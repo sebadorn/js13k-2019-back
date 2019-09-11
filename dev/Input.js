@@ -38,7 +38,7 @@ const Input = {
 	_onKeyDown: {},
 
 	gamepads: {},
-	isFirefox: false,
+	isLinuxFirefox: false,
 	keystate: {},
 	numGamepads: 0,
 
@@ -97,7 +97,7 @@ const Input = {
 
 			case this.ACTION.FIGHT_4:
 				kb.push( 37, 65 ); // LEFT, A
-				gp.push( this.isFirefox ? 3 : 2, 14 );
+				gp.push( this.isLinuxFirefox ? 3 : 2, 14 );
 				break;
 
 			case this.ACTION.UP:
@@ -107,7 +107,7 @@ const Input = {
 
 			case this.ACTION.FIGHT_3:
 				kb.push( 38, 87 ); // UP, W
-				gp.push( this.isFirefox ? 2 : 3, 12 );
+				gp.push( this.isLinuxFirefox ? 2 : 3, 12 );
 				break;
 
 			case this.ACTION.RIGHT:
@@ -142,8 +142,9 @@ const Input = {
 	 * Initialize the input handler.
 	 */
 	init() {
+		// There is gamepad bug in Firefox on Linux, but not Windows, maybe macOS.
 		let ua = String( navigator.userAgent ).toLowerCase();
-		this.isFirefox = ( ua.indexOf( 'firefox' ) >= 0 );
+		this.isLinuxFirefox = ( ua.indexOf( 'linux' ) >= 0 && ua.indexOf( 'firefox' ) >= 0 );
 
 		document.body.onkeydown = ( ev ) => {
 			let ks = this.keystate[ev.which];

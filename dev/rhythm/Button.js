@@ -77,7 +77,7 @@ class Rhythm_Button {
 
 			this.ui_rating.x = x;
 			this.ui_rating.y = y - 45;
-			this.ui_rating.text = rating[1].toUpperCase();
+			this.ui_rating.text = rating[1];
 			this.ui_rating.color[3] = Math.min( 1, 1 - this.progress + this.isHit );
 			this.ui_rating.draw( ctx );
 		}
@@ -164,22 +164,22 @@ class Rhythm_Button {
 	getRating() {
 		if( this.isHit && !this.wasWrong ) {
 			if( Math.abs( this.diff ) <= Math.abs( Rhythm_Button.TIME_DIFF_MIN ) ) {
-				return [4, 'perfect'];
+				return [4, 'PERFECT'];
 			}
 			else if( this.diff < Rhythm_Button.TIME_DIFF_MAX / 3 ) {
-				return [3, 'great'];
+				return [3, 'GREAT'];
 			}
 			else if( this.diff < Rhythm_Button.TIME_DIFF_MAX / 1.5 ) {
-				return [2, 'good'];
+				return [2, 'GOOD'];
 			}
 
-			return [1, 'bad'];
+			return [1, 'BAD'];
 		}
 		else if( this.isHit && this.wasWrong ) {
-			return [0, 'wrong'];
+			return [0, 'WRONG'];
 		}
 
-		return [-1, 'missed'];
+		return [-1, 'MISSED'];
 	}
 
 

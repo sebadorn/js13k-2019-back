@@ -14,12 +14,10 @@ class Level_Start extends Level {
 
 		this.ui_title = new UI_Text( 'How to send back...', 'italic 72px serif', [255, 255, 255], 0, 0, true );
 		this.ui_gp = new UI_Text(
-			// Why toUpperCase() instead of just writing it? Because
-			// this way it works better for the ZIP compression.
-			'to activate a gamepad, press a button on it.'.toUpperCase(),
+			'TO ACTIVATE A GAMEPAD, PRESS A BUTTON ON IT.',
 			'21px sans-serif', [255, 255, 255], 0, 0, true
 		);
-		this.ui_start = new UI_Text( 'to start press'.toUpperCase(), '21px sans-serif', [255, 255, 255], 0, 0, true );
+		this.ui_start = new UI_Text( 'TO START PRESS', '21px sans-serif', [255, 255, 255], 0, 0, true );
 
 		this.ui_gp.blink();
 

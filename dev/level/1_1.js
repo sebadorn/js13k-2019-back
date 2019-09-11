@@ -21,30 +21,20 @@ class Level_1_1 extends Level {
 
 		this.items = [
 			new Item(
-				'Salt Shaker',
+				'SALT SHAKER',
 				'Bolster your ghost defense!\nMore time for button prompts.',
 				{ time: 1.5 },
 				450, 0, 3, Item.drawSaltShaker
 			),
 			new Item(
-				'Iron Pan',
+				'IRON PAN',
 				'Become more convincing.\nMore mistakes allowed.',
 				{ goal: 0.7 },
 				0, 0, 5, Item.drawPan
 			)
 		];
 
-		if( Array.isArray( this.flags.items ) ) {
-			this.flags.items.forEach( usedItem => {
-				this.items.forEach( ( item, i ) => {
-					if( item.name === usedItem.name ) {
-						item.collected = true;
-					}
-				} );
-			} );
-		}
-
-		this.ui_challenge = new UI_Text( 'challenge'.toUpperCase(), 'bold 21px sans-serif', [255, 255, 255], 0, 0, true );
+		this.ui_challenge = new UI_Text( 'CHALLENGE', 'bold 21px sans-serif', [255, 255, 255], 0, 0, true );
 		this.ui_challenge.visible = false;
 
 		this.ui_collect = new UI_Text( '', 'bold 18px sans-serif', [255, 255, 255], 0, 0, true );
@@ -53,6 +43,17 @@ class Level_1_1 extends Level {
 		this.player.x = this.flags.success ? Renderer.centerX + 100 : 100;
 		this.player.orientationX = this.flags.success ? -1 : 1;
 		this.player.orientationY = 0;
+
+		if( Array.isArray( this.flags.items ) ) {
+			this.flags.items.forEach( usedItem => {
+				this.items.forEach( item => {
+					if( item.name === usedItem.name ) {
+						this.player.items.push( item );
+						item.collected = true;
+					}
+				} );
+			} );
+		}
 
 		this.playerMirror = new Player( 5 );
 
@@ -96,7 +97,7 @@ class Level_1_1 extends Level {
 		ctx.fillStyle = Renderer.COLOR.WHITE;
 		ctx.font = 'bold italic 21px sans-serif';
 		ctx.textAlign = 'left';
-		ctx.fillText( item.name.toUpperCase(), x, height + 76 );
+		ctx.fillText( item.name, x, height + 76 );
 
 		item.desc.forEach( ( t, i ) => {
 			ctx.font = i ? '21px sans-serif' : 'italic 21px sans-serif';
@@ -220,7 +221,7 @@ class Level_1_1 extends Level {
 			if( dist < 100 ) {
 				this.ui_collect.x = item.centerX;
 				this.ui_collect.y = item.y - 20;
-				this.ui_collect.text = 'collect'.toUpperCase();
+				this.ui_collect.text = 'COLLECT';
 				this.ui_collect.visible = true;
 
 				UI_Symbol.draw( ctx, Input.ACTION.INTERACT, [item.centerX - 10, item.y - 80, 20] );
@@ -390,7 +391,11 @@ class Level_1_1 extends Level {
 		this.items[0].y = height - 112;
 		this.items[1].y = height - 60;
 		this.checkItems( ctx, height );
-		this.items.forEach( item => !item.collected && item.draw( ctx ) );
+		this.items.forEach( item => {
+			if( !item.collected ) {
+				item.draw( ctx );
+			}
+		} );
 
 		// Text and prompts
 		this.ui_collect.draw( ctx );
@@ -453,7 +458,7 @@ class Level_1_1 extends Level {
 
 			this.player.update( dt, { x: 0, y } );
 
-			if( this.progress >= 14 ) {
+			if( this.progress >= 13 ) {
 				Renderer.changeLevel( new Level_Credits() );
 			}
 		}
@@ -478,7 +483,7 @@ class Level_1_1 extends Level {
 			this.ui_challenge.visible = false;
 		}
 
-		this.items[1].x = window.innerWidth - 500;
+		this.items[1].x = Math.min( Renderer.centerX + 300, window.innerWidth - 100 );
 	}
 
 

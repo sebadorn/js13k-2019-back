@@ -120,8 +120,8 @@ class Level_1_2 extends Level {
 		let t = 2;
 
 		data.forEach( item => {
-			item[0][0] *= window.innerWidth;
-			item[0][1] *= window.innerHeight;
+			item[0][0] = Math.round( item[0][0] * window.innerWidth );
+			item[0][1] = Math.round( item[0][1] * window.innerHeight );
 			item[2] += t;
 			t = item[2];
 		} );
@@ -191,7 +191,7 @@ class Level_1_2 extends Level {
 			}, 250 );
 		};
 
-		this.beat = GameAudio.play( 'beat', true, 1 );
+		this.beat = GameAudio.play( 'beat', true, 0.9 );
 	}
 
 
@@ -230,25 +230,26 @@ class Level_1_2 extends Level {
 
 			let width = Math.round( window.innerWidth / 3 );
 			let x = Renderer.centerX - Math.round( width / 2 );
+			let y = window.innerHeight - 80;
 			let marker = Math.round( ( 1 - this.goal / stats.total ) * width );
 
 			// Border
 			ctx.fillStyle = '#000';
-			ctx.fillRect( x - 5, window.innerHeight - 115, 5, 15 );
-			ctx.fillRect( x, window.innerHeight - 120, width, 5 );
-			ctx.fillRect( x, window.innerHeight - 100, width, 5 );
-			ctx.fillRect( x + width, window.innerHeight - 115, 5, 15 );
+			ctx.fillRect( x - 5, y + 5, 5, 15 );
+			ctx.fillRect( x, y, width, 5 );
+			ctx.fillRect( x, y + 20, width, 5 );
+			ctx.fillRect( x + width, y + 5, 5, 15 );
 
 			// Ghost energy
 			let playerWidth = Math.round( progress * width );
 			ctx.fillStyle = '#4B5E77';
-			ctx.fillRect( x, window.innerHeight - 115, width - playerWidth, 15 );
+			ctx.fillRect( x, y + 5, width - playerWidth, 15 );
 			// Player energy
 			ctx.fillStyle = '#C26F38';
-			ctx.fillRect( x + width - playerWidth, window.innerHeight - 115, playerWidth, 15 );
+			ctx.fillRect( x + width - playerWidth, y + 5, playerWidth, 15 );
 
 			ctx.fillStyle = '#000';
-			ctx.fillRect( x + marker, window.innerHeight - 115, 2, 15 );
+			ctx.fillRect( x + marker, y + 5, 2, 15 );
 
 			ctx.globalAlpha = 1;
 		}
@@ -262,13 +263,13 @@ class Level_1_2 extends Level {
 		ctx.textAlign = 'center';
 
 		if( this.rhythm.time < 11 ) {
-			ctx.fillText( 'Hit the button shortly before its timer runs out:'.toUpperCase(), Renderer.centerX, window.innerHeight * 0.3 );
+			ctx.fillText( 'HIT THE BUTTON SHORTLY BEFORE ITS TIMER RUNS OUT:', Renderer.centerX, window.innerHeight * 0.3 );
 		}
 		else if( this.rhythm.time < 13 ) {
-			ctx.fillText( 'Now faster.'.toUpperCase(), Renderer.centerX, window.innerHeight * 0.4);
+			ctx.fillText( 'NOW FASTER.', Renderer.centerX, window.innerHeight * 0.4);
 		}
 		else if( this.rhythm.time > 25 && this.rhythm.time < 29 ) {
-			ctx.fillText( 'Time for the real deal.'.toUpperCase(), Renderer.centerX, window.innerHeight * 0.4);
+			ctx.fillText( 'TIME FOR THE REAL DEAL.', Renderer.centerX, window.innerHeight * 0.4);
 		}
 
 		this.rhythm.draw( ctx );

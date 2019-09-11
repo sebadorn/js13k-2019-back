@@ -92,8 +92,7 @@ const Renderer = {
 		this.ctx = this.cnv.getContext( '2d' );
 
 		this.ui_pause = new UI_Text(
-			'PAUSED',
-			'bold 42px sans-serif', [255, 255, 255], 0, 0, true
+			'PAUSED', 'bold 42px sans-serif', [255, 255, 255], 0, 0, true
 		);
 
 		this.loadImages( () => {

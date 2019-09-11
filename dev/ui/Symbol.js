@@ -61,10 +61,7 @@ const UI_Symbol = {
 
 		switch( action ) {
 			case Input.ACTION.DOWN:
-				ctx.translate( x + sh, y + sh );
-				ctx.rotate( -Math.PI / 2 );
-				ctx.translate( -x - sh, -y - sh );
-				ctx.drawImage( img, 0, 10, 5, 5, ...dest );
+				ctx.drawImage( img, 20, 10, 5, 5, ...dest );
 				break;
 
 			case Input.ACTION.LEFT:
@@ -72,15 +69,11 @@ const UI_Symbol = {
 				break;
 
 			case Input.ACTION.RIGHT:
-				ctx.setTransform( -1, 0, 0, 1, x + s[2], y );
-				ctx.drawImage( img, 0, 10, 5, 5, 0, 0, s[2], s[2] );
+				ctx.drawImage( img, 20, 5, 5, 5, ...dest );
 				break;
 
 			case Input.ACTION.UP:
-				ctx.translate( x + sh, y + sh );
-				ctx.rotate( Math.PI / 2 );
-				ctx.translate( -x - sh, -y - sh );
-				ctx.drawImage( img, 0, 10, 5, 5, ...dest );
+				ctx.drawImage( img, 20, 0, 5, 5, ...dest );
 				break;
 
 			case Input.ACTION.FIGHT_1:

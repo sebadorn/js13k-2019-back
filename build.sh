@@ -57,7 +57,6 @@ $TERSER \
 	--ecma 6 --warn \
 	--compress --toplevel \
 	--mangle \
-	--mangle-props keep_quoted,reserved=[imageSmoothingEnabled] \
 	-o 'i.js'
 
 sed -i'' 's/^"use strict";//' 'i.js'
