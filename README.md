@@ -1,6 +1,6 @@
 # How to send back…
 
-Entry for the [js13k competition of 2019](https://2019.js13kgames.com/).  
+Entry for the [js13k competition of 2019](https://2019.js13kgames.com/entries/how-to-send-back).  
 Theme: **Back**
 
 
@@ -11,11 +11,6 @@ The new season of "How to send back…" airs! The first show was not well receiv
 As alternative for the [W] and [A] button prompts, the up and left arrow keys can be used too.
 
 [Esc] – Pause.
-
-
-## GitHub
-
-https://github.com/sebadorn/js13k-2019-back
 
 
 ## Third-party libraries
