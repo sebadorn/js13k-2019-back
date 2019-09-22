@@ -81,52 +81,52 @@ const Input = {
 
 		switch( action ) {
 			case this.ACTION.ESC:
-				kb.push( 27 ); // ESC
+				kb.push( 'Escape' );
 				gp.push( 9 );
 				break;
 
 			case this.ACTION.INTERACT:
-				kb.push( 13, 69 ); // ENTER, E
+				kb.push( 'Enter', 'KeyE' );
 				gp.push( 0 );
 				break;
 
 			case this.ACTION.LEFT:
-				kb.push( 37 ); // LEFT
+				kb.push( 'ArrowLeft' );
 				gp.push( 14 );
 				break;
 
 			case this.ACTION.FIGHT_4:
-				kb.push( 37, 65 ); // LEFT, A
+				kb.push( 'ArrowLeft', 'KeyA' );
 				gp.push( this.isLinuxFirefox ? 3 : 2, 14 );
 				break;
 
 			case this.ACTION.UP:
-				kb.push( 38 ); // UP
+				kb.push( 'ArrowUp' );
 				gp.push( 12 );
 				break;
 
 			case this.ACTION.FIGHT_3:
-				kb.push( 38, 87 ); // UP, W
+				kb.push( 'ArrowUp', 'KeyW' );
 				gp.push( this.isLinuxFirefox ? 2 : 3, 12 );
 				break;
 
 			case this.ACTION.RIGHT:
-				kb.push( 39 ); // RIGHT
+				kb.push( 'ArrowRight' );
 				gp.push( 15 );
 				break;
 
 			case this.ACTION.FIGHT_2:
-				kb.push( 39, 68 ); // RIGHT, D
+				kb.push( 'ArrowRight', 'KeyD' );
 				gp.push( 1, 15 );
 				break;
 
 			case this.ACTION.DOWN:
-				kb.push( 40 ); // DOWN
+				kb.push( 'ArrowDown' );
 				gp.push( 13 );
 				break;
 
 			case this.ACTION.FIGHT_1:
-				kb.push( 40, 83 ); // DOWN, S
+				kb.push( 'ArrowDown', 'KeyS' );
 				gp.push( 0, 13 );
 				break;
 		}
@@ -147,29 +147,29 @@ const Input = {
 		this.isLinuxFirefox = ( ua.indexOf( 'linux' ) >= 0 && ua.indexOf( 'firefox' ) >= 0 );
 
 		document.body.onkeydown = ( ev ) => {
-			let ks = this.keystate[ev.which];
+			let ks = this.keystate[ev.code];
 
 			if( !ks || !ks.waitForReset ) {
-				this.keystate[ev.which] = {
+				this.keystate[ev.code] = {
 					time: Date.now()
 				};
 
-				this._onKeyDown[ev.which] && this._onKeyDown[ev.which]();
+				this._onKeyDown[ev.code] && this._onKeyDown[ev.code]();
 			}
 
-			if( ev.which === 49 ) {
+			if( ev.code === 'Digit1' ) {
 				Input.PROMPTS = 1;
 			}
-			else if( ev.which === 50 ) {
+			else if( ev.code === 'Digit2' ) {
 				Input.PROMPTS = 2;
 			}
-			else if( ev.which === 51 ) {
+			else if( ev.code === 'Digit3' ) {
 				Input.PROMPTS = 3;
 			}
 		};
 
 		document.body.onkeyup = ( ev ) => {
-			this.keystate[ev.which] = {
+			this.keystate[ev.code] = {
 				time: 0
 			};
 		};
